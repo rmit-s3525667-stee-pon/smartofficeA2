@@ -1,0 +1,21 @@
+{% extends 'bootstrap/base.html' %}
+<!------ Include the above in your HEAD tag ---------->
+{% block navbar %}
+<div class="container">
+        <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class= "navbar-brand">Doctor</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Appointment List</a>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href='{{url_for('logout')}}'>Log out</a></li>
+                    </ul>
+                </div>
+            </nav>
+</div>
+{% endblock %}

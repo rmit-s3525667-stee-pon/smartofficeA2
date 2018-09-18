@@ -1,0 +1,85 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="well-block">
+                <div class="well-title">
+                    <h2>Questions? Book an Appointment</h2>
+                </div>
+                <form>
+                    <!-- Form start -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="name">Name</label>
+                                <input id="name" name="name" type="text" placeholder="Name" class="form-control input-md">
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="email">Email</label>
+                                <input id="email" name="email" type="text" placeholder="E-Mail" class="form-control input-md">
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="date">Preferred Date</label>
+                                <input id="date" name="date" type="text" placeholder="Preferred Date" class="form-control input-md">
+                            </div>
+                        </div>
+                        <!-- Select Basic -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="time">Preferred Time</label>
+                                <select id="time" name="time" class="form-control">
+                                    <option value="8:00 to 9:00">8:00 to 9:00</option>
+                                    <option value="9:00 to 10:00">9:00 to 10:00</option>
+                                    <option value="10:00 to 1:00">10:00 to 1:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Select Basic -->
+                        <div class="col-md-12 px-3">
+                            <div class="form-group">
+                                <label class="control-label" for="appointmentfor">Appointment For</label>
+                                <select id="appointmentfor" name="appointmentfor" class="form-control">
+                                    <option value="Service#1">Service#1</option>
+                                    <option value="Service#2">Service#2</option>
+                                    <option value="Service#3">Service#3</option>
+                                    <option value="Service#4">Service#4</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-default">Make An Appointment</button>
+                            </div>
+                        </div>
+                        <div>
+                            <iframe src="https://calendar.google.com/calendar/embed?src=bramanthatedford%40rocketmail.com&ctz=Australia%2FHobart" style="border: 0"
+                                width="600" height="600" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end -->
+                {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
+                not in message[1]: %}
+                <div class="alert alert-info">
+                    <strong>Success! </strong> {{ message[1] }}
+                </div>
+                {% endif %} {% if "Error" in message[1]: %}
+                <div class="alert alert-warning">
+                    {{ message[1] }}
+                </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
