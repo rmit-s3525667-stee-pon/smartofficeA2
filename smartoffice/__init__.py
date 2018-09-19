@@ -58,6 +58,19 @@ def add_patient(name, email):
     db.session.add(new_patient)
     db.session.commit()
 
+def get_patients():
+    all_patients = Patient.query.all()
+    return all_patients
+
+def add_doctor(name, email, major):
+    new_doctor = Doctor(name,email,major)
+    db.session.add(new_doctor)
+    db.session.commit()
+
+def get_doctors():
+    all_doctors = Doctor.query.all()
+    return all_doctors
+
 
 from smartoffice.doctor.app import mod
 from smartoffice.patient.app import mod
@@ -68,7 +81,8 @@ app.register_blueprint(patient.app.mod, url_prefix = "/patient")
 bootstrap = Bootstrap(app)
 
 login_html = "login.html"
-register_user = "register_user.html"
+register_user_html = "register_user.html"
+register_doctor_html = "register_doctor.html"
 
 def loginState():
     if 'type' in session:
@@ -79,13 +93,20 @@ def loginState():
     else: 
         return None
 
-@app.route("/login", methods=['GET'])
+@app.route("/", methods=['GET'])
+@app.route("/login")
 def login():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
-
-    return render_template("home.html", content = login_html)
+    all_patients = get_patients()
+    all_doctors = get_doctors()
+    data_output = {
+            'patients':all_patients,
+            'doctors':all_doctors,
+            'content':login_html
+            }
+    return render_template("home.html", **data_output)
 
 @app.route("/login", methods=['POST'])
 def loginAction():
@@ -107,7 +128,7 @@ def registerPatient():
     if redirect_link != None:
         return redirect(redirect_link)
 
-    return render_template("home.html", content = register_user)
+    return render_template("home.html", content = register_user_html)
 
 @app.route("/register_patient", methods=['POST'])
 def registerPatientAction():
@@ -119,6 +140,27 @@ def registerPatientAction():
     patient_email = request.form['email']
     add_patient(patient_name,patient_email)
     return redirect(url_for('login'))
+
+@app.route("/register_doctor")
+def registerDoctor():
+    redirect_link = loginState()
+    if redirect_link != None:
+        return redirect(redirect_link)
+    
+    return render_template("home.html", content = register_doctor_html)
+
+@app.route("/register_doctor", methods=['POST'])
+def registerDoctorAction():
+    redirect_link = loginState()
+    if redirect_link != None:
+        return redirect(redirect_link)
+    
+    doctor_name = request.form['name']
+    doctor_email = request.form['email']
+    doctor_major = request.form['major']
+    add_doctor(doctor_name,doctor_major, doctor_email)
+    return redirect(url_for('login'))
+
 
 @app.route('/logout')
 def logout():
