@@ -21,9 +21,9 @@ patients_schema = PatientSchema(many = True)
 
 class Doctor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80), unique=False)
     major = db.Column(db.String(120), unique=False)
-    email = db.Column(db.String(120), unique=True)
+    email = db.Column(db.String(120), unique=False)
 
     def __init__(self, name, major, email):
         self.name = name
@@ -39,45 +39,25 @@ doctors_schema = DoctorSchema(many = True)
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, unique = False)
-    patient_id = db.Column(db.Integer, unique = False)
-    date = db.Column(db.Date)
-    time_start = db.Column(db.Time)
-    time_end = db.Column(db.Time)
+    doctor_id = db.Column(db.Integer, unique=False)
+    date = db.Column(db.Date, unique=False)
+    time_start = db.Column(db.Time, unique=False)
+    time_end = db.Column(db.Time, unique=False)
+    patient_id = db.Column(db.Integer, unique=False)
 
-    def __init__(self, doctor_id, patient_id, date, time_start, time_end):
+    def __init__(self, doctor_id, date, time_start, time_end, patient_id):
         self.doctor_id = doctor_id
-        self.patient_id = patient_id
         self.date = date
         self.time_start = time_start
         self.time_end = time_end
+        self.patient_id = patient_id
 
 class AppointmentSchema(ma.Schema):
     class Meta:
-        fields = ('doctor_id','patient_id','date', 'time_start','time_end')
+        fields = ('doctor_id','date','time_start','time_end', 'patient_id')
 
 appointment_schema = AppointmentSchema()
 appointments_schema = AppointmentSchema(many = True)
-
-class MedicalRecord(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, unique = False)
-    patient_id = db.Column(db.Integer, unique = False)
-    appointment_id = db.Column(db.Integer, unique = False)
-    notes = db.Column(db.String(3000), unique = False)
-
-    def __init__(self, doctor_id, patient_id, appointment_id, notes):
-        self.doctor_id = doctor_id
-        self.patient_id = patient_id
-        self.appointment_id = appointment_id
-        self.notes = notes
-
-class MedicalRecordSchema(ma.Schema):
-    class Meta:
-        fields = ('doctor_id','patient_id','appointment_id', 'notes')
-
-medical_report_schema = AppointmentSchema()
-medical_reports_schema = AppointmentSchema(many = True)
 
 def add_patient(name, email):
     new_patient = Patient(name,email)
@@ -100,4 +80,19 @@ def add_doctor(name, email, major):
 def get_doctors():
     all_doctors = Doctor.query.all()
     return all_doctors
+
+
+def add_appointment(doctor_id, date, time_start, time_end, patient_id):
+    new_appointment = Appointment(doctor_id, date, time_start, time_end, patient_id)
+    db.session.add(new_appointment)
+    db.session.commit()
+
+def get_appointments():
+    all_appointments = Appointment.query.all()
+    return all_appointments
+
+def get_appointment(id):
+    appointment = Appointment.query.get(id)
+    return all_appointment
+
 
