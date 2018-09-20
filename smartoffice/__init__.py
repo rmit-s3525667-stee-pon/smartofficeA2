@@ -12,9 +12,9 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 USER = 'root'
-PASS = 'oliverwood98'
-HOST = '35.197.183.53'
-DBNAME = 'smartoffice'
+PASS = 'password'
+HOST = '35.201.22.140'
+DBNAME = 'smartoffice-db'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(USER,PASS,HOST,DBNAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

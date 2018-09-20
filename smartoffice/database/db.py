@@ -1,7 +1,21 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
-from smartoffice import db, ma
+
+import os
+app = Flask(__name__)
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+USER = 'root'
+PASS = 'password'
+HOST = '35.201.22.140'
+DBNAME = 'smartoffice-db'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(USER,PASS,HOST,DBNAME)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -78,26 +92,4 @@ class MedicalRecordSchema(ma.Schema):
 
 medical_report_schema = AppointmentSchema()
 medical_reports_schema = AppointmentSchema(many = True)
-
-def add_patient(name, email):
-    new_patient = Patient(name,email)
-    db.session.add(new_patient)
-    db.session.commit()
-
-def get_patients():
-    all_patients = Patient.query.all()
-    return all_patients
-
-def get_patient(id):
-    patient = Patient.query.get(id)
-    return patient
-
-def add_doctor(name, email, major):
-    new_doctor = Doctor(name,email,major)
-    db.session.add(new_doctor)
-    db.session.commit()
-
-def get_doctors():
-    all_doctors = Doctor.query.all()
-    return all_doctors
 
