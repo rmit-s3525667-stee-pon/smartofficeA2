@@ -1,0 +1,159 @@
+<div class="container">
+    <div class="col-md-10 col-md-offset-1">
+        <h3 class="text-center">Appointments</h3>
+        <table class="table table-condensed">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Patient</th>
+                    <th>Service</th>
+                    <th>Comments</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!------- Monday ---------->
+                <tr>
+                    <th rowspan="4">Monday <br> 17-09-2018</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3:00pm</td>
+                    <td>5:00pm</td>
+                    <td>Giang</td>
+                    <td>Monthly Health Examination</td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-danger">Get Patient Record</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5:00pm</td>
+                    <td>7:00pm</td>
+                    <td>Giang</td>
+                    <td>Health Situation check</td>
+                    <td></td>
+                    <td><button class="btn btn-danger">Get Patient Record</button></td>
+                </tr>
+                <tr>
+                    <form method="POST" action='{{url_for('doctor.add_appointments')}}'>
+                            <input type="text" name="day" value="Monday" class="hidden">
+                        <td><input type="text" class="start" name="start" placeholder="start"></td>
+                        <td><input type="text" class="end" name="end" placeholder="end"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-success">Add appointment</button></td>
+                    </form>
+                </tr>
+                <!------- Tuesday ---------->
+                <tr>
+                    <th rowspan="4">Tuesday <br> 18-09-2018</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>3:00pm</td>
+                    <td>5:00pm</td>
+                    <td>Giang</td>
+                    <td>Monthly Health Examination</td>
+                    <td></td>
+                    <td><button class="btn btn-danger">Get Patient Record</button></td>
+                </tr>
+                <tr>
+                    <td>5:00pm</td>
+                    <td>7:00pm</td>
+                    <td>Giang</td>
+                    <td>Health Situation check</td>
+                    <td></td>
+                    <td><button class="btn btn-danger">Get Patient Record</button></td>
+                </tr>
+                <tr>
+                    <form method="POST" action='{{url_for('doctor.add_appointments')}}'>
+                        <input type="text" name="day" value="Monday" class="hidden">
+                        <td><input type="text" class="start" name="start" placeholder="start"></td>
+                        <td><input type="text" class="end" name="end" placeholder="end"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-success">Add appointment</button></td>
+                    </form>
+                </tr>
+                <!------- Wednesday ---------->
+                <tr>
+                    <th rowspan="2">Wednesday <br> 19-09-2018</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <form method="POST" action='{{url_for('doctor.add_appointments')}}'>
+                            <input type="text" name="day" value="Monday" class="hidden">
+                        <td><input type="text" class="start" name="start" placeholder="start"></td>
+                        <td><input type="text" class="end" name="end" placeholder="end"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-success">Add appointment</button></td>
+                    </form>
+                </tr>
+                <!------- Thursday ---------->
+                <tr>
+                    <th rowspan="2">Thursday <br> 20-09-2018</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <form method="POST" action='{{url_for('doctor.add_appointments')}}'>
+                            <input type="text" name="day" value="Monday" class="hidden">
+                        <td><input type="text" class="start" name="start" placeholder="start"></td>
+                        <td><input type="text" class="end" name="end" placeholder="end"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-success">Add appointment</button></td>
+                    </form>
+                </tr>
+                <!------- Friday ---------->
+                <tr>
+                    <th rowspan="2">Friday <br> 21-09-2018</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <form method="POST" action='{{url_for('doctor.add_appointments')}}'>
+                        <input type="text" name="day" value="Monday" class="hidden">
+                        <td><input type="text" class="start" name="start" placeholder="start"></td>
+                        <td><input type="text" class="end" name="end" placeholder="end"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><button type="submit" class="btn btn-success">Add appointment</button></td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

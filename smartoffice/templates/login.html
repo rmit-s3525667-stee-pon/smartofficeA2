@@ -2,28 +2,29 @@
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script type=text/javascript>
-    $(document).ready(function(){
-        $("#type").change(function(){
-            if ($(this).val() == "Doctor"){
-                $(".doctor").removeClass("hidden")
-                $(".patient").addClass("hidden")
-                $(".clerk").addClass("hidden")
-            }
-            else if ($(this).val() == "Patient"){
-                $(".patient").removeClass("hidden")
-                $(".doctor").addClass("hidden")
-                $(".clerk").addClass("hidden")
-            }
-            else if ($(this).val() == "Medical Clerk"){
-                $(".clerk").removeClass("hidden")
-                $(".doctor").addClass("hidden")
-                $(".patient").addClass("hidden")
-            }
-        })
-    });
-</script>
-<!------ Include the above in your HEAD tag ---------->
+<script type=text/javascript> 
+$(document).ready(function(){ 
+    $("#type").change(function(){ 
+        if ($(this).val()=="Doctor"){ 
+            $(".doctor").removeClass("hidden") 
+            $(".patient").addClass("hidden") 
+            $(".clerk").addClass("hidden") 
+        } 
+        else if ($(this).val()=="Patient" ){ 
+            $(".patient").removeClass("hidden") 
+            $(".doctor").addClass("hidden")
+            $(".clerk").addClass("hidden") 
+        } 
+        else if ($(this).val()=="Medical Clerk" ){ 
+            $(".clerk").removeClass("hidden")
+            $(".doctor").addClass("hidden") 
+            $(".patient").addClass("hidden") 
+        } 
+    }) 
+}); 
+</script> 
+    
+<!------ Include the above inyour HEAD tag ---------->
 
 <div class="align-middle jumbotron">
     <div class="container">
@@ -34,9 +35,9 @@
                     <div class="doctor form-group text-center hidden">
                         <label class="control-label" for="doctor_name">Doctor Name</label>
                         <select id="doctor_name" name="doctor_name" class="form-control">
-				{% for doctor in doctors %}
-				<option value='{{ doctor.id }}'>{{doctor.name}}</option>
-				{% endfor %}
+                            {% for doctor in doctors %}
+                            <option value='{{ doctor.id }}'>{{doctor.name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <!------ List of patients name ---------->
@@ -44,8 +45,8 @@
                         <label class="control-label" for="patient_name">Patient Name</label>
                         <select id="patient_name" name="patient_name" class="form-control">
                             {% for patient in patients %}
-			    <option value='{{ patient.id }}' >{{patient.name}}</option>
-			    {% endfor %}
+                            <option value='{{ patient.id }}' >{{patient.name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
                     <!------ List of clerks name ---------->

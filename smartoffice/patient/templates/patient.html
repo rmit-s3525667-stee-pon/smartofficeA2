@@ -17,7 +17,8 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href='{{url_for('logout')}}'>Log out</a></li>
+                <li><a class="nav-link" href='{{url_for('patient.profile')}}'>Profile <span class="glyphicon glyphicon-user"></span></a></li>
+                <li><a href='{{url_for('logout')}}'>Log out <span class="glyphicon glyphicon-log-out"></span></a></li> 
             </ul>
         </div>
     </nav>
