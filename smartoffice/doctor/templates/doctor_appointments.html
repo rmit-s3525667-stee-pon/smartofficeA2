@@ -39,8 +39,8 @@
             <tbody>
                 <!------- Monday ---------->
 
-                {% for doctor in doctors %}
-                <!-- complete code here -->
+                {% for apt in appointments %}
+                    {{ apt.date}}
                 {% endfor %}
                 <tr>
                     <th rowspan="4">Monday <br> 17-09-2018</th>
@@ -136,3 +136,4 @@
         </table>
     </div>
 </div>
+<!--  -->

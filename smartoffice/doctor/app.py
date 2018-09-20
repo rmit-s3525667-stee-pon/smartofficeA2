@@ -18,6 +18,7 @@ def loginState():
     else: 
         return url_for('login')
 
+# read all appointments
 @mod.route('/appointments')
 def doctor():
     redirect_link = loginState()
@@ -31,6 +32,7 @@ def doctor():
 
     return render_template('doctor_nav.html', **data_output)
 
+# add an appointment
 @mod.route('/appointments', methods=['POST'])
 def add_appointments():
     redirect_link = loginState()
@@ -45,3 +47,5 @@ def add_appointments():
  
     model.add_appointment(doctor_id, date, time_start, time_end, patient_id)
     return redirect(url_for("doctor.add_appointments"))
+
+

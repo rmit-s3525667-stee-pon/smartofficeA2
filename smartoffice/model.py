@@ -87,12 +87,15 @@ def add_appointment(doctor_id, date, time_start, time_end, patient_id):
     db.session.add(new_appointment)
     db.session.commit()
 
+def get_appointment(id):
+    appointment = Appointment.query.get(id)
+    return all_appointment
+
 def get_appointments():
     all_appointments = Appointment.query.all()
     return all_appointments
 
-def get_appointment(id):
-    appointment = Appointment.query.get(id)
-    return all_appointment
+
+
 
 
