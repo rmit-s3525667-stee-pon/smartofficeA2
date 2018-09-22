@@ -18,16 +18,22 @@ def loginState():
     else: 
         return url_for('login')
 
+# def convert_to_24(time):
+#     return time[:-2] if time[-2:] == "AM" else str(int(time[:2]) + 12) + time[2:8] 
+
 # read all appointments
 @mod.route('/appointments')
-def doctor():
+def appointments():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
-    all_appointments = model.get_appointments()
+
+    patients = model.get_patients()
+    appointments = model.get_appointments_by_doctor(int(session['id']))
     data_output = {
-        'appointments':all_appointments,
-        'content':lppointments_html
+        'patients':patients,
+        'appointments':appointments,
+        'content':appointments_html
     }
 
     return render_template('doctor_nav.html', **data_output)
@@ -46,6 +52,18 @@ def add_appointments():
     patient_id = None
  
     model.add_appointment(doctor_id, date, time_start, time_end, patient_id)
+    return redirect(url_for("doctor.add_appointments"))
+
+# remove an appointment
+@mod.route('/remove_appointment', methods=['POST'])
+def remove_appointment():
+    redirect_link = loginState()
+    if redirect_link != None:
+        return redirect(redirect_link)
+    
+    appointment_id = request.form['appointment_id']
+    model.remove_appointment(appointment_id)
+
     return redirect(url_for("doctor.add_appointments"))
 
 

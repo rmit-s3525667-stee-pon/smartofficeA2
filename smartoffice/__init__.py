@@ -34,11 +34,12 @@ bootstrap = Bootstrap(app)
 login_html = "login.html"
 register_user_html = "register_user.html"
 register_doctor_html = "register_doctor.html"
+profile_html = "profile.html"
 
 def loginState():
     if 'type' in session:
         if session['type'] == "Doctor":
-            return url_for('doctor.doctor')
+            return url_for('doctor.appointments')
         elif session['type'] == "Patient":
             return url_for('patient.appointments')
     else: 
@@ -70,7 +71,7 @@ def loginAction():
         session['type'] = request.form['type']
         if type == "Doctor":
             session['id'] = request.form['doctor_name']
-            return redirect(url_for('doctor.doctor'))
+            return redirect(url_for('doctor.appointments'))
         elif type == "Patient":
             session['id'] = request.form['patient_name']
             return redirect(url_for('patient.appointments'))
@@ -114,6 +115,16 @@ def registerDoctorAction():
     model.add_doctor(doctor_name,doctor_major, doctor_email)
     return redirect(url_for('login'))
 
+@app.route("/patient_record", methods=['POST'])
+def patientRecord():
+    patient_id = request.form['patient_id']    
+    patient = model.get_patient(patient_id)
+    data_output = {
+            'patient':patient,
+            'content':profile_html
+            }
+
+    return render_template("patient.html", **data_output)
 
 @app.route('/logout')
 def logout():

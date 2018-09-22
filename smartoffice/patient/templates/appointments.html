@@ -8,30 +8,26 @@
                     <th>Date</th>
                     <th>Start</th>
                     <th>End</th>
-                    <th>Service</th>
-                    <th>Comments</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
+                {% for appointment in appointments %}
                 <tr>
-                    <td>Joshep Dao</td>
-                    <td>17-09-2018</td>
-                    <td>3:00pm</td>
-                    <td>5:00pm</td>
-                    <td>Monthly Health Examination</td>
-                    <td></td>
-                    <td><button class="btn btn-danger">Remove</button></td>
+                    {% for doctor in doctors %}
+                        {% if appointment.doctor_id == doctor.id %}
+                            <td>{{ doctor.name }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ appointment.date }}</td>
+                    <td>{{ appointment.time_start }}</td>
+                    <td>{{ appointment.time_end }}</td>
+                    <form method="POST" action='{{ url_for('patient.unbook_appointment')}}'>
+                        <input type ="text" class="hidden" value ='{{ appointment.id }}' name='appointment_id'>
+                        <td><button type="submit" class="btn btn-danger">Remove</button></td>
+                    </form>
                 </tr>
-                <tr>
-                    <td>Christopher</td>
-                    <td>17-09-2018</td>
-                    <td>3:00pm</td>
-                    <td>5:00pm</td>
-                    <td>Health Situation check</td>
-                    <td></td>
-                    <td><button class="btn btn-danger">Remove</button></td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

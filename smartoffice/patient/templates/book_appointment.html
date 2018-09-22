@@ -4,33 +4,14 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="well-block">
-                <div class="well-title">
-                    <h2>Questions? Book an Appointment</h2>
-                </div>
-                <form>
-                    <!-- Form start -->
+                <!-- <form>
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label" for="name">Name</label>
-                                <input id="name" name="name" type="text" placeholder="Name" class="form-control input-md">
-                            </div>
-                        </div>
-                        <!-- Text input-->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label" for="email">Email</label>
-                                <input id="email" name="email" type="text" placeholder="E-Mail" class="form-control input-md">
-                            </div>
-                        </div>
-                        <!-- Text input-->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label" for="date">Preferred Date</label>
                                 <input id="date" name="date" type="text" placeholder="Preferred Date" class="form-control input-md">
                             </div>
                         </div>
-                        <!-- Select Basic -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="control-label" for="time">Preferred Time</label>
@@ -41,19 +22,6 @@
                                 </select>
                             </div>
                         </div>
-                        <!-- Select Basic -->
-                        <div class="col-md-12 px-3">
-                            <div class="form-group">
-                                <label class="control-label" for="appointmentfor">Appointment For</label>
-                                <select id="appointmentfor" name="appointmentfor" class="form-control">
-                                    <option value="Service#1">Service#1</option>
-                                    <option value="Service#2">Service#2</option>
-                                    <option value="Service#3">Service#3</option>
-                                    <option value="Service#4">Service#4</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- Button -->
                         <div class="col-md-12">
                             <div class="form-group">
                                 <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-default">Make An Appointment</button>
@@ -64,8 +32,37 @@
                                 width="600" height="600" frameborder="0" scrolling="no"></iframe>
                         </div>
                     </div>
-                </form>
-                <!-- form end -->
+                </form> -->
+                <h3 class="text-center">Available Appointments</h3>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>Stop Time</th>
+                            <th>Doctor Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.time_start }}</td>
+                            <td>{{ appointment.time_end }}</td>
+                            {% for doctor in doctors %}
+                                {% if appointment.doctor_id == doctor.id %}
+                                    <td>{{ doctor.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <form method="POST" action='{{url_for('patient.book_appointment')}}'>
+                                <input class="hidden" value='{{ appointment.id }}' name="appointment_id">
+                                <td><button type="submit" class="btn btn-success">Book</button></td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
                 not in message[1]: %}
                 <div class="alert alert-info">
