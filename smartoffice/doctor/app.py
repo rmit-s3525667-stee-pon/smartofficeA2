@@ -38,23 +38,33 @@ def appointments():
 
     return render_template('doctor_nav.html', **data_output)
 
+# see appointments in calendar format
+@mod.route('/calendar')
+def calendar():
+	redirect_link = loginState()
+	if redirect_link != None:
+		return redirect(redirect_link)
+
+	return render_template('doctor_nav.html', content = 'doctor_calendar.html')
+
 # add an appointment
 @mod.route('/appointments', methods=['POST'])
 def add_appointments():
-    redirect_link = loginState()
-    if redirect_link != None:
-        return redirect(redirect_link)
-    
-    date = request.form['date']
-    doctor_id = session['id']
-    time_start = request.form['time_start']
-    time_end = request.form['time_end']
-    patient_id = None
- 
-    model.add_appointment(doctor_id, date, time_start, time_end, patient_id)
-    return redirect(url_for("doctor.add_appointments"))
+	redirect_link = loginState()
+	if redirect_link != None:
+		return redirect(redirect_link)
 
-# remove an appointment
+	date = request.form['date']
+	doctor_id = session['id']
+	time_start = request.form['time_start']
+	time_end = request.form['time_end']
+	patient_id = None
+
+	event_id = model.add_appointment_to_calendar(doctor_id, date, time_start, time_end, patient_id)
+	model.add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id)
+
+	return redirect(url_for("doctor.add_appointments"))
+
 @mod.route('/remove_appointment', methods=['POST'])
 def remove_appointment():
     redirect_link = loginState()
@@ -62,7 +72,9 @@ def remove_appointment():
         return redirect(redirect_link)
     
     appointment_id = request.form['appointment_id']
+    event_id = request.form['event_id']
     model.remove_appointment(appointment_id)
+    model.remove_appointment_from_calendar(event_id)
 
     return redirect(url_for("doctor.add_appointments"))
 

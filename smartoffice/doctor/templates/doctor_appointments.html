@@ -56,6 +56,7 @@
                             <td>
                                 <form method="POST" action='{{ url_for('doctor.remove_appointment')}}'>
                                     <input type ="text" class="hidden" value ='{{ appointment.id }}' name='appointment_id'>
+                                    <input type ="text" class="hidden" value ='{{ appointment.event_id }}' name='event_id'>
                                     <button type="submit" class="btn btn-danger">Remove</button>
                                 </form>
                             </td>
@@ -63,7 +64,7 @@
                     </tr>
                     {% endfor %}
             </tbody>
-        </table>
+        </table> <br>
     </div>
 </div>
 <!--  -->

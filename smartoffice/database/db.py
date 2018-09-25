@@ -53,22 +53,24 @@ doctors_schema = DoctorSchema(many = True)
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    doctor_id = db.Column(db.Integer, unique = False)
-    patient_id = db.Column(db.Integer, unique = False)
-    date = db.Column(db.Date)
-    time_start = db.Column(db.Time)
-    time_end = db.Column(db.Time)
+    doctor_id = db.Column(db.Integer, unique=False)
+    date = db.Column(db.Date, unique=False)
+    time_start = db.Column(db.Time, unique=False)
+    time_end = db.Column(db.Time, unique=False)
+    patient_id = db.Column(db.Integer, unique=False)
+    event_id = db.Column(db.String(120), unique=False)
 
-    def __init__(self, doctor_id, patient_id, date, time_start, time_end):
+    def __init__(self, doctor_id, date, time_start, time_end, patient_id, event_id):
         self.doctor_id = doctor_id
-        self.patient_id = patient_id
         self.date = date
         self.time_start = time_start
         self.time_end = time_end
+        self.patient_id = patient_id
+        self.event_id = event_id
 
 class AppointmentSchema(ma.Schema):
     class Meta:
-        fields = ('doctor_id','patient_id','date', 'time_start','time_end')
+        fields = ('doctor_id','date','time_start','time_end', 'patient_id', 'event_id')
 
 appointment_schema = AppointmentSchema()
 appointments_schema = AppointmentSchema(many = True)
