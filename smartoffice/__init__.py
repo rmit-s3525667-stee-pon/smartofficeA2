@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-from flask import Flask, session, render_template, redirect, request, url_for
+from flask import Flask, session, render_template, redirect, request, url_for, flash
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, DateTimeField
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import sys
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
-
 import os
 app = Flask(__name__)
 
@@ -35,6 +35,13 @@ login_html = "login.html"
 register_user_html = "register_user.html"
 register_doctor_html = "register_doctor.html"
 profile_html = "profile.html"
+
+
+class ReusableForm(Form):
+    name = TextField('Name:', validators=[validators.required(), validators.Length(min=4, max=10)])
+    phone = TextField('Phone:', validators=[validators.required(), validators.Length(min=10, max=10)])
+    birthday  = DateTimeField('Birthday:', format='%Y-%m-%d', validators=[validators.required()])
+    email = TextField('Email:', validators=[validators.required()])
 
 def loginState():
     if 'type' in session:
@@ -89,11 +96,30 @@ def registerPatientAction():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
+    form = ReusableForm(request.form)
+ 
+    print (form.errors)
+    if form.validate() :
+        patient_name=request.form['name']
+        patient_phone=request.form['phone']
+        patient_birthday=request.form['birthday']
+        patient_email=request.form['email']
+        print (patient_name, " ", patient_phone, " ", patient_birthday, " ", patient_email, " ")
+        model.add_patient(patient_name, patient_phone, patient_birthday, patient_email)
+        flash('Thanks for registration ' + patient_name)
+        return redirect('login')
+    else:
+        flash('Error: Please try again ')
+        return redirect('register_patient')
         
-    patient_name = request.form['name']
-    patient_email = request.form['email']
-    model.add_patient(patient_name,patient_email)
-    return redirect(url_for('login'))
+ 
+    # redirect_link = loginState()
+    # if redirect_link != None:
+    #     return redirect(redirect_link)
+    # patient_name = request.form['name']
+    # patient_email = request.form['email']           
+    # model.add_patient(patient_name,patient_email)
+    # return redirect(url_for('login'))
 
 @app.route("/register_doctor")
 def registerDoctor():
