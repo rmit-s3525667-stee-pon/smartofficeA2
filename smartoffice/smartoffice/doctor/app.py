@@ -5,7 +5,7 @@ import sys
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 mod = Blueprint('doctor',__name__, template_folder='templates')
 
-from smartoffice import model
+from smartoffice import api_caller
 
 appointments_html = "doctor_appointments.html"
 
@@ -28,9 +28,9 @@ def availabilities():
     if redirect_link != None:
         return redirect(redirect_link)
 
-    patients = model.get_patients()
-    availabilities = model.get_availability_by_doctor(int(session['id']))
-    doctors = model.get_doctor(int(session['id']))
+    patients = api_caller.get_patients()
+    availabilities = api_caller.get_availability_by_doctor(int(session['id']))
+    doctors = api_caller.get_doctor(int(session['id']))
     data_output = {
         'patients':patients,
         'availabilities': availabilities,
@@ -62,8 +62,8 @@ def add_availability():
 	time_end = request.form['time_end']
 	summary = request.form['doctor_name']
 
-	event_id = model.add_to_calendar(summary,doctor_id, date, time_start, time_end)
-	model.add_availability(doctor_id, date, time_start, time_end, event_id)
+	event_id = api_caller.add_to_calendar(summary,doctor_id, date, time_start, time_end)
+	api_caller.add_availability(doctor_id, date, time_start, time_end, event_id)
 
 	add_appointment_automatically(doctor_id, date, time_start, time_end)
 
@@ -82,8 +82,8 @@ def add_appointment_automatically(doctor_id, date, time_start, time_end):
 	for x in range(num):
 		time_end = st + datetime.timedelta(minutes = 15)
 		time_end_format = datetime.datetime.strftime(time_end, '%H:%M')
-		event_id = model.add_to_calendar(summary,doctor_id, date, time_start, time_end_format)
-		model.add_appointment(doctor_id, date, time_start, time_end_format, patient_id, event_id)
+		event_id = api_caller.add_to_calendar(summary,doctor_id, date, time_start, time_end_format)
+		api_caller.add_appointment(doctor_id, date, time_start, time_end_format, patient_id, event_id)
 
 		# time_end_strptime = datetime.datetime.strptime(time_end, '%Y %m %d %H:%M:%S')
 		time_start = time_end
@@ -99,8 +99,8 @@ def remove_availability():
     
     availability_id = request.form['availability_id']
     event_id = request.form['event_id']
-    model.remove_availability(availability_id)
-    model.remove_from_calendar(event_id)
+    api_caller.remove_availability(availability_id)
+    api_caller.remove_from_calendar(event_id)
 
     return redirect(url_for("doctor.availabilities"))
 

@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 mod = Blueprint('patient',__name__,  template_folder='templates')
 
-from smartoffice import model
+from smartoffice import api_caller
 
 make_appointment_html = "book_appointment.html"
 appointments_html = "appointments.html"
@@ -26,8 +26,8 @@ def appointments():
     if redirect_link != None:
         return redirect(redirect_link)
         
-    doctors = model.get_doctors()
-    appointments = model.get_appointments_by_patient(int(session['id']))
+    doctors = api_caller.get_doctors()
+    appointments = api_caller.get_appointments_by_patient(int(session['id']))
 
     data_output = {
         'doctors':doctors,
@@ -44,12 +44,12 @@ def make_appointment():
         return redirect(redirect_link)
 
     if request.method == 'GET':
-        appointments = model.get_available_appointments()
+        appointments = api_caller.get_available_appointments()
     elif request.method == 'POST':
         doctor_id = request.form['doctor_name']
-        appointments = model.get_available_appointments_by_doctor(doctor_id)
+        appointments = api_caller.get_available_appointments_by_doctor(doctor_id)
 
-    doctors = model.get_doctors()
+    doctors = api_caller.get_doctors()
     data_output = {
         'doctors':doctors,
         'appointments':appointments,
@@ -66,7 +66,7 @@ def book_appointment():
     
     patient_id = session['id']
     appointment_id = request.form['appointment_id']
-    model.book_appointment(appointment_id, patient_id)
+    api_caller.book_appointment(appointment_id, patient_id)
 
     return redirect(url_for("patient.appointments"))
 
@@ -77,7 +77,7 @@ def unbook_appointment():
         return redirect(redirect_link)
         
     appointment_id = request.form['appointment_id']
-    model.unbook_appointment(appointment_id)
+    api_caller.unbook_appointment(appointment_id)
 
     return redirect(url_for("patient.appointments"))
 
@@ -87,7 +87,7 @@ def profile():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
-    patient = model.get_patient(session['id'])
+    patient = api_caller.get_patient(session['id'])
     data_output = {
             'patient':patient,
             'content':profile_html

@@ -4,8 +4,6 @@ from wtforms import Form, TextField, TextAreaField, validators, StringField, Sub
 from wtforms_components import DateRange, Email
 from datetime import datetime, date
 from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import sys
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 import os
@@ -13,17 +11,7 @@ app = Flask(__name__)
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-USER = 'root'
-PASS = 'password'
-HOST = '35.201.22.140'
-DBNAME = 'smartoffice-db'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(USER,PASS,HOST,DBNAME)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
-
-import model
+import api_caller
 
 from smartoffice.doctor.app import mod
 from smartoffice.patient.app import mod
@@ -66,8 +54,8 @@ def login():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
-    all_patients = model.get_patients()
-    all_doctors = model.get_doctors()
+    all_patients = api_caller.get_patients()
+    all_doctors = api_caller.get_doctors()
     data_output = {
             'patients':all_patients,
             'doctors':all_doctors,
@@ -113,7 +101,7 @@ def registerPatientAction():
         patient_birthday=request.form['birthday']
         patient_email=request.form['email']
         print (patient_name, " ", patient_phone, " ", patient_birthday, " ", patient_email, " ")
-        model.add_patient(patient_name, patient_phone, patient_birthday, patient_email)
+        api_caller.add_patient(patient_name, patient_phone, patient_birthday, patient_email)
         flash('Thanks for registration as a patient, ' + patient_name)
         return redirect('login')
     else:
@@ -151,7 +139,7 @@ def registerDoctorAction():
         doctor_email=request.form['email']
         doctor_major=request.form['major']
         print (doctor_name, " ", doctor_email, " ", doctor_major, " ")
-        model.add_doctor(doctor_name, doctor_email, doctor_major)
+        api_caller.add_doctor(doctor_name, doctor_email, doctor_major)
         flash('Thanks for registration as a doctor, ' + doctor_name)
         return redirect('login')
     else:
@@ -167,7 +155,7 @@ def registerDoctorAction():
 @app.route("/patient_record", methods=['POST'])
 def patientRecord():
     patient_id = request.form['patient_id']    
-    patient = model.get_patient(patient_id)
+    patient = api_caller.get_patient(patient_id)
     data_output = {
             'patient':patient,
             'content':profile_html

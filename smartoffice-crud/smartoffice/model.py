@@ -12,7 +12,7 @@ SCOPES = 'https://www.googleapis.com/auth/calendar'
 store = file.Storage('token.json')
 creds = store.get()
 if not creds or creds.invalid:
-    flow = client.flow_from_clientsecrets('/home/pi/A2/smartoffice/smartoffice/credentials.json', SCOPES)
+    flow = client.flow_from_clientsecrets('//home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice/credentials.json', SCOPES)
     creds = tools.run_flow(flow, store)
 service = build('calendar', 'v3', http=creds.authorize(Http()))
 google_calendar_id = 'ujb115kig589rtaa9ecorfvfjo@group.calendar.google.com'
@@ -33,7 +33,7 @@ class Patient(db.Model):
 
 class PatientSchema(ma.Schema):
     class Meta:
-        fields = ('name','phone','birthday','email')
+        fields = ('id','name','phone','birthday','email')
     
 patient_schema = PatientSchema()
 patients_schema = PatientSchema(many = True)
@@ -51,7 +51,7 @@ class Doctor(db.Model):
 
 class DoctorSchema(ma.Schema):
     class Meta:
-        fields = ('name','major','email')
+        fields = ('id','name','major','email')
 
 doctor_schema = DoctorSchema()
 doctors_schema = DoctorSchema(many = True)
@@ -75,7 +75,7 @@ class Appointment(db.Model):
 
 class AppointmentSchema(ma.Schema):
     class Meta:
-        fields = ('doctor_id','date','time_start','time_end', 'patient_id', 'event_id')
+        fields = ('id','doctor_id','date','time_start','time_end', 'patient_id', 'event_id')
 
 appointment_schema = AppointmentSchema()
 appointments_schema = AppointmentSchema(many = True)
@@ -95,7 +95,7 @@ class MedicalRecord(db.Model):
 
 class MedicalRecordSchema(ma.Schema):
     class Meta:
-        fields = ('doctor_id','patient_id','appointment_id', 'notes')
+        fields = ('id','doctor_id','patient_id','appointment_id', 'notes')
 
 medical_report_schema = AppointmentSchema()
 medical_reports_schema = AppointmentSchema(many = True)
@@ -117,10 +117,10 @@ class Availability(db.Model):
 
 class AvailabilitySchema(ma.Schema):
     class Meta:
-        fields = ('doctor_id','date','time_start','time_end', 'event_id')
+        fields = ('id','doctor_id','date' ,'time_start','time_end', 'event_id')
 
 availability_schema = AvailabilitySchema()
-availability_schema = AvailabilitySchema(many = True)
+availabilities_schema = AvailabilitySchema(many = True)
 
 def add_patient(name, phone, birthday, email):
     new_patient = Patient(name, phone, birthday, email)
@@ -169,7 +169,6 @@ def add_to_calendar(summary, doctor_id, date, time_start, time_end):
 
     time_start = start_time.strftime('%Y-%m-%dT%H:%M:%S+10:00')
     time_end   = end_time.strftime('%Y-%m-%dT%H:%M:%S+10:00')
-
     event = {
         'summary': summary,
         'location': 'Clinic',
@@ -196,18 +195,28 @@ def add_to_calendar(summary, doctor_id, date, time_start, time_end):
     event = service.events().insert(calendarId=google_calendar_id, body=event).execute()
     return event['id']
 
+
+def remove_from_calendar(event_id):
+    service.events().delete(calendarId=google_calendar_id, eventId=event_id).execute()
+
+
 def get_appointment(id):
     appointment = Appointment.query.get(id)
-    return all_appointment
+    return appointment
 
 def get_appointments():
     all_appointments = Appointment.query.order_by(Appointment.date, Appointment.time_start).all()
     return all_appointments
 
 def remove_appointment(appointment_id):
-    appointment = Appointment.query.filter_by(id=appointment_id)
-    appointment.delete()
-    db.session.commit()
+    try:
+        appointment = Appointment.query.filter_by(id=appointment_id)
+        appointment.delete()
+        db.session.commit()
+        return True
+    except:
+        return False
+
 
 def get_availability():
     all_availabilities = Availability.query.order_by(Availability.date, Availability.time_start).all()
@@ -221,9 +230,6 @@ def remove_availability(availability_id):
     appointment = Availability.query.filter_by(id=availability_id)
     appointment.delete()
     db.session.commit()   
-
-def remove_from_calendar(event_id):
-    service.events().delete(calendarId=google_calendar_id, eventId=event_id).execute()
 
 def get_available_appointments():
     appointments = Appointment.query.filter(Appointment.patient_id == None).order_by(Appointment.date, Appointment.time_start).all()
@@ -244,7 +250,6 @@ def get_appointments_by_patient(id):
 def get_upcoming_appointments_by_doctor(id):
     now = datetime.datetime.now()
     currentdate = now.strftime("%Y-%m-%d")
-
     appointments = Appointment.query.filter(Appointment.doctor_id == id).filter(Appointment.date >= currentdate).order_by(Appointment.date, Appointment.time_start).all()
     return appointments
 
@@ -259,11 +264,13 @@ def book_appointment(appointment_id, patient_id):
     appointment = Appointment.query.get(appointment_id)
     appointment.patient_id = patient_id
     db.session.commit()
+    return appointment
 
 def unbook_appointment(appointment_id):
     appointment = Appointment.query.get(appointment_id)
     appointment.patient_id = None
     db.session.commit()
+    return appointment
 
 
 
