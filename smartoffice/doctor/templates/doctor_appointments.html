@@ -1,6 +1,6 @@
 <div class="container">
     <div class="col-md-10 col-md-offset-1">
-        <h3 class="text-center">Create Appointments</h3>
+        <h3 class="text-center">Create Availabilities</h3>
         <table class="table table-condensed">
          <thead>
 
@@ -12,17 +12,18 @@
             </thead>
             <tbody>
             <tr>
-                    <form method="POST" action='{{url_for('doctor.add_appointments')}}'>
+                    <form method="POST" action='{{url_for('doctor.add_availability')}}'>
                 
                         <td><input type="date" name="date"></td>
                         <td><input type="time"  name="time_start"></td>
                         <td><input type="time" name="time_end"></td>
-                        <td><button type="submit" class="btn btn-success">Add appointment</button></td>
+                        <input type ="text" class="hidden" value ='{{ doctors.name }}' name='doctor_name'>
+                        <td><button type="submit" class="btn btn-success">Add Availability</button></td>
                     </form>
                 </tr>
                 </tbody>
         </table><br>
-             <h3 class="text-center">Appointments</h3>
+             <h3 class="text-center">Upcoming Availabilities</h3>
         <table class="table table-condensed">
                 <thead>
                     <tr>
@@ -34,14 +35,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for appointment in appointments%}
+                    {% for availability in availabilities%}
                     <tr>
-                        <td>{{ appointment.date }}</td>
-                        <td>{{ appointment.time_start }}</td>
-                        <td>{{ appointment.time_end }}</td>
-                        {% if appointment.patient_id != None %}
-                            {% for patient in patients %}
-                                {% if appointment.patient_id == patient.id %}
+                        <td>{{ availability.date }}</td>
+                        <td>{{ availability.time_start }}</td>
+                        <td>{{ availability.time_end }}</td>
+                        {% if availability.doctor_id == None %}
+                            <!-- {% for patient in patients %}
+                                {% if availability.patient_id == patient.id %}
                                     <td>{{ patient.name }}</td>
                                     <td>
                                         <form method="POST" action='{{ url_for('patientRecord')}}'>
@@ -50,13 +51,13 @@
                                         </form>
                                     </td>
                                 {% endif %}
-                            {% endfor %}
+                            {% endfor %} -->
                         {% else %}
                             <td>Available</td>
                             <td>
-                                <form method="POST" action='{{ url_for('doctor.remove_appointment')}}'>
-                                    <input type ="text" class="hidden" value ='{{ appointment.id }}' name='appointment_id'>
-                                    <input type ="text" class="hidden" value ='{{ appointment.event_id }}' name='event_id'>
+                                <form method="POST" action='{{ url_for('doctor.remove_availability')}}'>
+                                    <input type ="text" class="hidden" value ='{{ availability.id }}' name='availability_id'>
+                                    <input type ="text" class="hidden" value ='{{ availability.event_id }}' name='event_id'>
                                     <button type="submit" class="btn btn-danger">Remove</button>
                                 </form>
                             </td>

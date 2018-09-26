@@ -37,14 +37,19 @@ def appointments():
 
     return render_template("patient.html", **data_output)
 
-@mod.route('/make_appointment')
+@mod.route('/make_appointment', methods=['GET', 'POST'])
 def make_appointment():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
-    doctors = model.get_doctors()
-    appointments = model.get_available_appointments()
 
+    if request.method == 'GET':
+        appointments = model.get_available_appointments()
+    elif request.method == 'POST':
+        doctor_id = request.form['doctor_name']
+        appointments = model.get_available_appointments_by_doctor(doctor_id)
+
+    doctors = model.get_doctors()
     data_output = {
         'doctors':doctors,
         'appointments':appointments,

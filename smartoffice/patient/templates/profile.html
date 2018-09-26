@@ -2,8 +2,11 @@
     <div class="col-md-8 col-md-offset-2">
         <div class="col-md-3">
             <h2>{{ patient.name }}</h2>
-            <h5>Email: {{ patient.email }}</h3>
+            <h5>Email:<br> {{ patient.email }}</h5>
+            <h5>Dob:<br>{{ patient.birthday }} </h5>
+            <h5>Phone:<br> {{ patient.phone }}</h5>
         </div>
+        <br>
         <div class="col-md-9">
             <h3 class="text-center">History Appointments</h3>
             <table class="table table-condensed">

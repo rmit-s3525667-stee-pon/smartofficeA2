@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-from flask import Flask, session, render_template, redirect, request, url_for
+from flask import Flask, session, render_template, redirect, request, url_for, flash
+from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField, DateTimeField
+from wtforms_components import DateRange, Email
+from datetime import datetime, date
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import sys
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
-
 import os
 app = Flask(__name__)
 
@@ -36,10 +38,23 @@ register_user_html = "register_user.html"
 register_doctor_html = "register_doctor.html"
 profile_html = "profile.html"
 
+
+class ReusableForm(Form):
+    name = TextField('Name:', validators=[validators.required(), validators.Length(min=4)])
+    phone = TextField('Phone:', validators=[validators.required(), validators.Length(min=10, max=10)])
+    birthday  = DateTimeField('Birthday:', format='%Y-%m-%d', validators=[DateRange(min=datetime(1910, 1, 1),max=datetime(2018, 10, 10)), validators.required()])
+    email = TextField('Email:', validators=[validators.required(), Email()])
+
+class ReusableFormDoctor(Form):
+    name = TextField('Name:', validators=[validators.required(), validators.Length(min=4)])
+    email = TextField('Email address', [validators.required(), Email()])
+    major = TextField('Major:', validators=[validators.required()])
+
+
 def loginState():
     if 'type' in session:
         if session['type'] == "Doctor":
-            return url_for('doctor.appointments')
+            return url_for('doctor.availabilities')
         elif session['type'] == "Patient":
             return url_for('patient.appointments')
     else: 
@@ -71,7 +86,7 @@ def loginAction():
         session['type'] = request.form['type']
         if type == "Doctor":
             session['id'] = request.form['doctor_name']
-            return redirect(url_for('doctor.appointments'))
+            return redirect(url_for('doctor.availabilities'))
         elif type == "Patient":
             session['id'] = request.form['patient_name']
             return redirect(url_for('patient.appointments'))
@@ -89,11 +104,30 @@ def registerPatientAction():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
+    form = ReusableForm(request.form)
+ 
+    print (form.errors)
+    if form.validate() :
+        patient_name=request.form['name']
+        patient_phone=request.form['phone']
+        patient_birthday=request.form['birthday']
+        patient_email=request.form['email']
+        print (patient_name, " ", patient_phone, " ", patient_birthday, " ", patient_email, " ")
+        model.add_patient(patient_name, patient_phone, patient_birthday, patient_email)
+        flash('Thanks for registration as a patient, ' + patient_name)
+        return redirect('login')
+    else:
+        flash('Error: Please try again ')
+        return redirect('register_patient')
         
-    patient_name = request.form['name']
-    patient_email = request.form['email']
-    model.add_patient(patient_name,patient_email)
-    return redirect(url_for('login'))
+ 
+    # redirect_link = loginState()
+    # if redirect_link != None:
+    #     return redirect(redirect_link)
+    # patient_name = request.form['name']
+    # patient_email = request.form['email']           
+    # model.add_patient(patient_name,patient_email)
+    # return redirect(url_for('login'))
 
 @app.route("/register_doctor")
 def registerDoctor():
@@ -108,12 +142,27 @@ def registerDoctorAction():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
+
+    form = ReusableFormDoctor(request.form)
+ 
+    print (form.errors)
+    if form.validate() :
+        doctor_name=request.form['name']
+        doctor_email=request.form['email']
+        doctor_major=request.form['major']
+        print (doctor_name, " ", doctor_email, " ", doctor_major, " ")
+        model.add_doctor(doctor_name, doctor_email, doctor_major)
+        flash('Thanks for registration as a doctor, ' + doctor_name)
+        return redirect('login')
+    else:
+        flash('Error: Please try again ')
+        return redirect('register_doctor')
     
-    doctor_name = request.form['name']
-    doctor_email = request.form['email']
-    doctor_major = request.form['major']
-    model.add_doctor(doctor_name,doctor_major, doctor_email)
-    return redirect(url_for('login'))
+    # doctor_name = request.form['name']
+    # doctor_email = request.form['email']
+    # doctor_major = request.form['major']
+    # model.add_doctor(doctor_name,doctor_major, doctor_email)
+    # return redirect(url_for('login'))
 
 @app.route("/patient_record", methods=['POST'])
 def patientRecord():

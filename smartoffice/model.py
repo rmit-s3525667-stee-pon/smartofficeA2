@@ -100,6 +100,28 @@ class MedicalRecordSchema(ma.Schema):
 medical_report_schema = AppointmentSchema()
 medical_reports_schema = AppointmentSchema(many = True)
 
+class Availability(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, unique=False)
+    date = db.Column(db.Date, unique=False)
+    time_start = db.Column(db.Time, unique=False)
+    time_end = db.Column(db.Time, unique=False)
+    event_id = db.Column(db.String(120), unique=False)
+
+    def __init__(self, doctor_id, date, time_start, time_end, event_id):
+        self.doctor_id = doctor_id
+        self.date = date
+        self.time_start = time_start
+        self.time_end = time_end
+        self.event_id = event_id
+
+class AvailabilitySchema(ma.Schema):
+    class Meta:
+        fields = ('doctor_id','date','time_start','time_end', 'event_id')
+
+availability_schema = AvailabilitySchema()
+availability_schema = AvailabilitySchema(many = True)
+
 def add_patient(name, phone, birthday, email):
     new_patient = Patient(name, phone, birthday, email)
     db.session.add(new_patient)
@@ -122,13 +144,22 @@ def get_doctors():
     all_doctors = Doctor.query.all()
     return all_doctors
 
+def get_doctor(id):
+    doctor = Doctor.query.get(id)
+    return doctor
 
 def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id):
     new_appointment = Appointment(doctor_id, date, time_start, time_end, patient_id,event_id)
     db.session.add(new_appointment)
     db.session.commit()
 
-def add_appointment_to_calendar(doctor_id, date, time_start, time_end, patient_id):
+def add_availability(doctor_id, date, time_start, time_end, event_id):
+    new_availability = Availability(doctor_id, date, time_start, time_end, event_id)
+    db.session.add(new_availability)
+    db.session.commit()
+
+# summary can be Availability or Appointment
+def add_to_calendar(summary, doctor_id, date, time_start, time_end):
     year, month, day = map(int, date.split('-'))
     startHour, startMinute = map(int, time_start.split(':'))
     endHour, endMinute = map(int, time_end.split(':'))
@@ -140,7 +171,7 @@ def add_appointment_to_calendar(doctor_id, date, time_start, time_end, patient_i
     time_end   = end_time.strftime('%Y-%m-%dT%H:%M:%S+10:00')
 
     event = {
-        'summary': 'Availability',
+        'summary': summary,
         'location': 'Clinic',
         'transparency': 'transparent',
         'start': {
@@ -178,11 +209,28 @@ def remove_appointment(appointment_id):
     appointment.delete()
     db.session.commit()
 
-def remove_appointment_from_calendar(event_id):
+def get_availability():
+    all_availabilities = Availability.query.order_by(Availability.date, Availability.time_start).all()
+    return all_availabilities
+
+def get_availability_by_doctor(id):
+    all_availabilities = Availability.query.filter(Availability.doctor_id == id).order_by(Availability.date, Availability.time_start).all()
+    return all_availabilities
+
+def remove_availability(availability_id):
+    appointment = Availability.query.filter_by(id=availability_id)
+    appointment.delete()
+    db.session.commit()   
+
+def remove_from_calendar(event_id):
     service.events().delete(calendarId=google_calendar_id, eventId=event_id).execute()
 
 def get_available_appointments():
     appointments = Appointment.query.filter(Appointment.patient_id == None).order_by(Appointment.date, Appointment.time_start).all()
+    return appointments
+
+def get_available_appointments_by_doctor(id):
+    appointments = Appointment.query.filter(Appointment.patient_id == None).filter(Appointment.doctor_id == id).order_by(Appointment.date, Appointment.time_start).all()
     return appointments
 
 def get_appointments_by_doctor(id):
@@ -193,8 +241,19 @@ def get_appointments_by_patient(id):
     appointments = Appointment.query.filter(Appointment.patient_id == id).order_by(Appointment.date, Appointment.time_start).all()
     return appointments
 
-    # get upcoming
-    # get past appointment
+def get_upcoming_appointments_by_doctor(id):
+    now = datetime.datetime.now()
+    currentdate = now.strftime("%Y-%m-%d")
+
+    appointments = Appointment.query.filter(Appointment.doctor_id == id).filter(Appointment.date >= currentdate).order_by(Appointment.date, Appointment.time_start).all()
+    return appointments
+
+# def get_past_appointments_by_doctor(id):
+
+# def get_upcoming_appointments_by_patient(id):
+
+# def get_past_appointments_by_patient(id):
+
 
 def book_appointment(appointment_id, patient_id):
     appointment = Appointment.query.get(appointment_id)

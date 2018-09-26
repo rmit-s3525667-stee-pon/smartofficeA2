@@ -1,8 +1,26 @@
 <!------ Include the above in your HEAD tag ---------->
-
+<div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <h3>Doctor</h3>
+            <br>
+        <table class="table table-condensed">
+            <thead>
+                <form method="POST" action='{{url_for('patient.make_appointment')}}'>
+                    <select name="doctor_name" onchange="if(this.value != 0) { this.form.submit(); }">
+                            <option value="0"> Select a Doctor </option>
+                        {% for doctor in doctors %}
+                            <option value="{{doctor.id}}">{{ doctor.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </thead>
+        </table>
+    </div>
+    <hr>
+    </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-10 col-md-offset-1">
             <div class="well-block">
                 <!-- <form>
                     <div class="row">

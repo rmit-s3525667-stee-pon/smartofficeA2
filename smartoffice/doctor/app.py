@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask, render_template, session, url_for, redirect, request
-import time
+import time, datetime
 import sys
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 mod = Blueprint('doctor',__name__, template_folder='templates')
@@ -21,24 +21,26 @@ def loginState():
 # def convert_to_24(time):
 #     return time[:-2] if time[-2:] == "AM" else str(int(time[:2]) + 12) + time[2:8] 
 
-# read all appointments
-@mod.route('/appointments')
-def appointments():
+# read all availabilities
+@mod.route('/availabilities')
+def availabilities():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
 
     patients = model.get_patients()
-    appointments = model.get_appointments_by_doctor(int(session['id']))
+    availabilities = model.get_availability_by_doctor(int(session['id']))
+    doctors = model.get_doctor(int(session['id']))
     data_output = {
         'patients':patients,
-        'appointments':appointments,
+        'availabilities': availabilities,
+        'doctors': doctors,
         'content':appointments_html
     }
 
     return render_template('doctor_nav.html', **data_output)
 
-# see appointments in calendar format
+# see availabilities in calendar format
 @mod.route('/calendar')
 def calendar():
 	redirect_link = loginState()
@@ -47,9 +49,9 @@ def calendar():
 
 	return render_template('doctor_nav.html', content = 'doctor_calendar.html')
 
-# add an appointment
-@mod.route('/appointments', methods=['POST'])
-def add_appointments():
+# add an availability
+@mod.route('/add_availability', methods=['POST'])
+def add_availability():
 	redirect_link = loginState()
 	if redirect_link != None:
 		return redirect(redirect_link)
@@ -58,24 +60,48 @@ def add_appointments():
 	doctor_id = session['id']
 	time_start = request.form['time_start']
 	time_end = request.form['time_end']
+	summary = request.form['doctor_name']
+
+	event_id = model.add_to_calendar(summary,doctor_id, date, time_start, time_end)
+	model.add_availability(doctor_id, date, time_start, time_end, event_id)
+
+	add_appointment_automatically(doctor_id, date, time_start, time_end)
+
+	return redirect(url_for("doctor.availabilities"))
+
+def add_appointment_automatically(doctor_id, date, time_start, time_end):
 	patient_id = None
+	summary = "Appointment"
 
-	event_id = model.add_appointment_to_calendar(doctor_id, date, time_start, time_end, patient_id)
-	model.add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id)
+	st = datetime.datetime.strptime(time_start, '%H:%M')
+	et = datetime.datetime.strptime(time_end, '%H:%M')
+	tdelta = et - st
+	fifteen_mins = datetime.datetime.strptime('00:15', '%H:%M')
 
-	return redirect(url_for("doctor.add_appointments"))
+	num = int((tdelta.total_seconds()/3600) * 4)
+	for x in range(num):
+		time_end = st + datetime.timedelta(minutes = 15)
+		time_end_format = datetime.datetime.strftime(time_end, '%H:%M')
+		event_id = model.add_to_calendar(summary,doctor_id, date, time_start, time_end_format)
+		model.add_appointment(doctor_id, date, time_start, time_end_format, patient_id, event_id)
 
-@mod.route('/remove_appointment', methods=['POST'])
-def remove_appointment():
+		# time_end_strptime = datetime.datetime.strptime(time_end, '%Y %m %d %H:%M:%S')
+		time_start = time_end
+		time_start = datetime.datetime.strftime(time_start, '%H:%M')
+		st = datetime.datetime.strptime(time_start, '%H:%M')
+
+# remove an availability
+@mod.route('/remove_availability', methods=['POST'])
+def remove_availability():
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
     
-    appointment_id = request.form['appointment_id']
+    availability_id = request.form['availability_id']
     event_id = request.form['event_id']
-    model.remove_appointment(appointment_id)
-    model.remove_appointment_from_calendar(event_id)
+    model.remove_availability(availability_id)
+    model.remove_from_calendar(event_id)
 
-    return redirect(url_for("doctor.add_appointments"))
+    return redirect(url_for("doctor.availabilities"))
 
 
