@@ -17,6 +17,12 @@ class Doctor():
         self.name = name
         self.major = major
         self.email = email
+
+class Clerk():
+    def __init__(self, id, name, email):
+        self.id = id
+        self.name = name
+        self.email = email
     
 class Appointment():
     def __init__(self, id, doctor_id, date, time_start, time_end, patient_id, event_id):
@@ -38,9 +44,10 @@ class Availability():
         self.event_id = event_id
         
 
-URL = 'http://10.132.139.86/'
+URL = 'http://10.132.80.171/'
 patient_code = 'patient'
 doctor_code = 'doctor'
+clerk_code = 'clerk'
 appointment_code = 'appointment'
 availability_code = 'availability'
 calendar_code = 'calendar'
@@ -142,6 +149,52 @@ def get_doctor(id):
         print("Error Occur")
         return None
 
+# get all the clerks
+def get_clerks():
+    url = URL + clerk_code
+    clerks = []
+    try:
+        response = requests.get(url)
+        json_data = response.json()
+        for clerk_json in json_data:
+            clerk = Clerk(clerk_json['id'], clerk_json['name'], clerk_json['email'])
+            clerks.append(clerk)
+        print("Clerks retrieved")
+        return clerks
+    except:
+        print("Unable to get clerks, Error Occur")
+        return None
+
+  # add clerk to the system
+def add_clerk(name, email):
+    url = URL + clerk_code
+    data_send = {
+        "name": name,
+        "email": email,
+    }
+    try:
+        response = requests.post(url, 
+            data = json.dumps(data_send),
+            headers = {'Content-Type':'application/json'}
+        )
+        print("Clerk added to the system")
+        return True
+    except:
+        print("Unable to add clerk, Error Occur")
+        return False
+
+
+def get_clerk(id):
+    url = URL + clerk_code + "/"+ str(id)
+    try:
+        response = requests.get(url)
+        json_data = response.json()
+        clerk = Clerk(json_data['id'], json_data['name'], json_data['email'])
+        print("Clerk retrieve")
+        return clerk
+    except:
+        print("Error Occur")
+        return None
 # Appointment API Caller
     # add a appointment
 def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id):
@@ -241,6 +294,25 @@ def get_available_appointments_by_doctor(id):
                 appointment_json['doctor_id'], appointment_json['date'], 
                 appointment_json['time_start'], appointment_json['time_end'], 
                 appointment_json['patient_id'], appointment_json['event_id']
+                )
+            appointments.append(appointment)
+        print("Retrieve Appointments")
+        return appointments
+    except:
+        print("Unable to get Appointments, Error Occur")
+        return None
+
+def get_available_appointments_by_patient(id):
+    url = URL + appointment_code + "/available/patient/" + str(id)
+    appointments = []
+    try:
+        response = requests.get(url)
+        json_data = response.json()
+        for appointment_json in json_data:
+            appointment = Appointment(appointment_json['id'],
+                appointment_json['patient_id'], appointment_json['date'], 
+                appointment_json['time_start'], appointment_json['time_end'], 
+                appointment_json['doctor_id'], appointment_json['event_id']
                 )
             appointments.append(appointment)
         print("Retrieve Appointments")

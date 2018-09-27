@@ -1,0 +1,69 @@
+<div class="container">
+    <div class="col-md-8 col-md-offset-2">
+        <br>
+        <div class="col-md-9">
+               <form method="POST" action='{{url_for('clerk.show_appointment')}}'>
+                    <select name="patient_name" onchange="if(this.value != 0) { this.form.submit(); }">
+                            <option value="0"> Select a Patient </option>
+                        {% for patient in patients %}
+                            <option value="{{patient.id}}">{{ patient.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </thead>
+        </table>
+    </div>
+    <hr>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="well-block">
+                <h3 class="text-center">Patient's Appointments</h3>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>Stop Time</th>
+                            <th>Doctor Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ patient.name}}
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.time_start }}</td>
+                            <td>{{ appointment.time_end }}</td>
+                        {% for doctor in doctors %}
+                        {% if appointment.appointment_id == doctor.id %}
+                                     <td>{{ doctor.name }}</td>
+                        {% endif %}
+                        {% endfor %}
+                           <!--  <form method="POST" action='{{url_for('patient.book_appointment')}}'>
+                                <input class="hidden" value='{{ appointment.id }}' name="appointment_id">
+                                <td><button type="submit" class="btn btn-success">Book</button></td>
+                            </form> -->
+                        </tr>
+                        {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
+                not in message[1]: %}
+                <div class="alert alert-info">
+                    <strong>Success! </strong> {{ message[1] }}
+                </div>
+                {% endif %} {% if "Error" in message[1]: %}
+                <div class="alert alert-warning">
+                    {{ message[1] }}
+                </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>

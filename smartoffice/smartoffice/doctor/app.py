@@ -2,7 +2,8 @@ from flask import Blueprint
 from flask import Flask, render_template, session, url_for, redirect, request
 import time, datetime
 import sys
-sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
+# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
+sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 mod = Blueprint('doctor',__name__, template_folder='templates')
 
 from smartoffice import api_caller

@@ -15,7 +15,7 @@ $(document).ready(function(){
             $(".doctor").addClass("hidden")
             $(".clerk").addClass("hidden") 
         } 
-        else if ($(this).val()=="Medical Clerk" ){ 
+        else if ($(this).val()=="Clerk" ){ 
             $(".clerk").removeClass("hidden")
             $(".doctor").addClass("hidden") 
             $(".patient").addClass("hidden") 
@@ -72,6 +72,10 @@ $(document).ready(function(){
                     <div class="clerk form-group text-center hidden">
                         <label class="control-label" for="clerk_name">Clerk Name</label>
                         <select id="clerk_name" name="clerk_name" class="form-control">
+                             {% for clerk in clerks %}
+                            <option value='{{ clerk.id }}' >{{clerk.name}}</option>
+                            {% endfor %}
+                 
                         </select>
                     </div>
                     
@@ -80,7 +84,7 @@ $(document).ready(function(){
                         <select id="type" name="type" class="form-control">
                             <option value="Patient">Patient</option>
                             <option value="Doctor">Doctor</option>
-                            <option value="Medical Clerk">Medical Clerk</option>
+                            <option value="Clerk">Medical Clerk</option>
                         </select>
                     </div>
                     <div class="form-group text-center">
