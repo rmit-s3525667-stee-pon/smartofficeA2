@@ -12,7 +12,7 @@ SCOPES = 'https://www.googleapis.com/auth/calendar'
 store = file.Storage('token.json')
 creds = store.get()
 if not creds or creds.invalid:
-    flow = client.flow_from_clientsecrets('//home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice/credentials.json', SCOPES)
+    flow = client.flow_from_clientsecrets('/home/pi/A2/smartoffice-crud/smartoffice/credentials.json', SCOPES)
     creds = tools.run_flow(flow, store)
 service = build('calendar', 'v3', http=creds.authorize(Http()))
 google_calendar_id = 'ujb115kig589rtaa9ecorfvfjo@group.calendar.google.com'
@@ -55,6 +55,22 @@ class DoctorSchema(ma.Schema):
 
 doctor_schema = DoctorSchema()
 doctors_schema = DoctorSchema(many = True)
+
+class Clerk(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=False)
+    email = db.Column(db.String(120), unique=False)
+
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+class ClerkSchema(ma.Schema):
+    class Meta:
+        fields = ('id','name','email')
+
+clerk_schema = ClerkSchema()
+clerks_schema = ClerkSchema(many = True)
 
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -148,6 +164,19 @@ def get_doctor(id):
     doctor = Doctor.query.get(id)
     return doctor
 
+def add_clerk(name, email):
+    new_clerk = Clerk(name,email)
+    db.session.add(new_clerk)
+    db.session.commit()
+
+def get_clerks():
+    all_clerks = Clerk.query.all()
+    return all_clerks
+
+def get_clerk(id):
+    clerk = Clerk.query.get(id)
+    return clerk
+    
 def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id):
     new_appointment = Appointment(doctor_id, date, time_start, time_end, patient_id,event_id)
     db.session.add(new_appointment)

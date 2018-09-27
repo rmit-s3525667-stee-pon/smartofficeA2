@@ -7,6 +7,9 @@ mod = Blueprint('appointment',__name__, template_folder='templates')
 
 from smartoffice import model
 
+def date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
 # Add appointment
 @mod.route('', methods=['POST'])
 def add_appointments():
@@ -29,7 +32,7 @@ def get_appointments():
 @mod.route('/<id>', methods=['GET'])
 def get_appointment(id):
     appointment = model.get_appointment(id)
-    return apponment_schema.jsonify(appointment)
+    return appointment_schema.jsonify(appointment)
 
 # Remove Appointment by Id
 @mod.route('/<id>', methods=['DELETE'])
@@ -43,7 +46,8 @@ def remove_appointment(id):
 @mod.route('/available', methods=['GET'])
 def get_available_appointments():
     appointments = model.get_available_appointments()
-    return model.appointments_schema.jsonify(appointments)
+    return model.appointments_schema.dumps(appointments, default = date_handler )
+
 
 # Get All Available Appoinments of a Doctor by Doctor Id
 @mod.route('/available/doctor/<id>', methods=['GET'])

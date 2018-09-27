@@ -55,6 +55,22 @@ class DoctorSchema(ma.Schema):
 doctor_schema = DoctorSchema()
 doctors_schema = DoctorSchema(many = True)
 
+class Clerk(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(120), unique=True)
+
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+class ClerkSchema(ma.Schema):
+    class Meta:
+        fields = ('name','email')
+
+clerk_schema = ClerkSchema()
+clerks_schema = ClerkSchema(many = True)
+
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique=False)
