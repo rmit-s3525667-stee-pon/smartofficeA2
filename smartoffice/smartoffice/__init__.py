@@ -8,9 +8,9 @@ import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+# sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
 # April's directory 
-# sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
+sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 
 import os
 app = Flask(__name__)
@@ -159,8 +159,9 @@ def registerDoctorAction():
         doctor_name=request.form['name']
         doctor_email=request.form['email']
         doctor_major=request.form['major']
+        calendar_id = None
         print (doctor_name, " ", doctor_email, " ", doctor_major, " ")
-        api_caller.add_doctor(doctor_name, doctor_email, doctor_major)
+        api_caller.add_doctor(doctor_name, doctor_email, doctor_major, calendar_id)
         flash('Thanks for registration as a doctor, ' + doctor_name)
         return redirect('login')
     else:
