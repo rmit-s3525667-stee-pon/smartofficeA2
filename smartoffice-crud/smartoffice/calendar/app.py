@@ -3,7 +3,12 @@ from flask import Flask, render_template, session, url_for, redirect, request
 
 import time
 import sys
-sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+
+# Minh's pi
+# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+# Bram and April's pi
+sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
+
 mod = Blueprint('calendar',__name__, template_folder='templates')
 
 from smartoffice import model
@@ -21,5 +26,6 @@ def add_to_calendar():
     date = request.json['date']
     time_start = request.json['time_start']
     time_end = request.json['time_end']
-    model.add_to_calendar(summary, doctor_id, date, time_start, time_end)
+    calendar_id = request.json['calendar_id']
+    model.add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id)
     return "Added"

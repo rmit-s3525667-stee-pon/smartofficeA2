@@ -4,6 +4,10 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import sys
+
+# Minh's pi
+# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+# Bram and April's pi
 sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
 
 import os

@@ -12,11 +12,12 @@ class Patient():
         self.email = email
 
 class Doctor():
-    def __init__(self, id, name, major, email):
+    def __init__(self, id, name, email, major, calendar_id):
         self.id = id
         self.name = name
         self.major = major
         self.email = email
+        self.calendar_id = calendar_id
 
 class Clerk():
     def __init__(self, id, name, email):
@@ -110,7 +111,7 @@ def get_doctors():
         response = requests.get(url)
         json_data = response.json()
         for doctor_json in json_data:
-            doctor = Doctor(doctor_json['id'], doctor_json['name'], doctor_json['email'], doctor_json['major'])
+            doctor = Doctor(doctor_json['id'], doctor_json['name'], doctor_json['email'], doctor_json['major'], doctor_json['calendar_id'])
             doctors.append(doctor)
         return doctors
         print("Doctors Retrieved")
@@ -119,12 +120,13 @@ def get_doctors():
         return None
 
     # add doctor to the system
-def add_doctor(name, email, major):
+def add_doctor( name, major, email, calendar_id):
     url = URL + doctor_code
     data_send = {
         "name": name,
+        "major":major,
         "email": email,
-        "major":major
+        "calendar_id":None
     }
     try:
         response = requests.post(url, 
@@ -139,12 +141,13 @@ def add_doctor(name, email, major):
 
 def get_doctor(id):
     url = URL + doctor_code + "/"+ str(id)
+    doctors = []
     try:
         response = requests.get(url)
         json_data = response.json()
-        doctor = Doctor(json_data['id'], json_data['name'], json_data['major'], json_data['email'])
-        print("Doctor retrieve")
+        doctor = Doctor(json_data['id'], json_data['name'], json_data['email'], json_data['major'], json_data['calendar_id'])
         return doctor
+        print("Doctor retrieve")
     except:
         print("Error Occur")
         return None
@@ -492,14 +495,15 @@ def remove_from_calendar(id):
         print("Unable to remove event, Error Occur")
         return False
 
-def add_to_calendar(summary, doctor_id, date, time_start, time_end):
+def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id):
     url = URL + calendar_code
     data_send = {
         "summary": summary,
         "doctor_id": doctor_id,
         "date": date,
         "time_start": time_start,
-        "time_end": time_end
+        "time_end": time_end,
+        "calendar_id": calendar_id
     }
     try:
         response = requests.post(url,

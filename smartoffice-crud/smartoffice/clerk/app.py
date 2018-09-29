@@ -2,7 +2,12 @@ from flask import Blueprint
 from flask import Flask, render_template, session, url_for, redirect, request
 import time
 import sys
+
+# Minh's pi
+# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+# Bram and April's pi
 sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
+
 mod = Blueprint('clerk',__name__, template_folder='templates')
 
 from smartoffice import model

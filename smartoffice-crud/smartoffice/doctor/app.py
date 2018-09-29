@@ -2,7 +2,12 @@ from flask import Blueprint
 from flask import Flask, render_template, session, url_for, redirect, request
 import time
 import sys
+
+# Minh's pi
+# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+# Bram and April's pi
 sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
+
 mod = Blueprint('doctor',__name__, template_folder='templates')
 
 from smartoffice import model
@@ -13,7 +18,8 @@ def add_doctor():
     name = request.json['name']
     email = request.json['email']
     major = request.json['major']
-    new_doctor = model.add_doctor(name, email, major)
+    calendar_id = model.add_calendar(name)
+    new_doctor = model.add_doctor(name, email, major, calendar_id)
     return model.doctor_schema.jsonify(new_doctor)
 
 # Get All Doctor

@@ -12,6 +12,9 @@ SCOPES = 'https://www.googleapis.com/auth/calendar'
 store = file.Storage('token.json')
 creds = store.get()
 if not creds or creds.invalid:
+    # Minh's pi
+    # flow = client.flow_from_clientsecrets('/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice', SCOPES)
+    # Bram and April's pi
     flow = client.flow_from_clientsecrets('/home/pi/A2/smartoffice-crud/smartoffice/credentials.json', SCOPES)
     creds = tools.run_flow(flow, store)
 service = build('calendar', 'v3', http=creds.authorize(Http()))
@@ -40,18 +43,20 @@ patients_schema = PatientSchema(many = True)
 
 class Doctor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=False)
+    name = db.Column(db.String(80), unique=True)
     major = db.Column(db.String(120), unique=False)
-    email = db.Column(db.String(120), unique=False)
+    email = db.Column(db.String(120), unique=True)
+    calendar_id = db.Column(db.String(120), unique=True)
 
-    def __init__(self, name, major, email):
+    def __init__(self, name, major, email, calendar_id):
         self.name = name
         self.major = major
         self.email = email
+        self.calendar_id = calendar_id
 
 class DoctorSchema(ma.Schema):
     class Meta:
-        fields = ('id','name','major','email')
+        fields = ('id','name','major','email', 'calendar_id')
 
 doctor_schema = DoctorSchema()
 doctors_schema = DoctorSchema(many = True)
@@ -151,8 +156,8 @@ def get_patient(id):
     patient = Patient.query.get(id)
     return patient
 
-def add_doctor(name, email, major):
-    new_doctor = Doctor(name,email,major)
+def add_doctor(name, email, major, calendar_id):
+    new_doctor = Doctor(name,major,email, calendar_id)
     db.session.add(new_doctor)
     db.session.commit()
 
@@ -187,8 +192,18 @@ def add_availability(doctor_id, date, time_start, time_end, event_id):
     db.session.add(new_availability)
     db.session.commit()
 
+def add_calendar(summary):
+    calendar = {
+        'summary': summary,
+        'timeZone': 'America/Los_Angeles'
+    }
+
+    created_calendar = service.calendars().insert(body=calendar).execute()
+
+    return created_calendar['id']
+
 # summary can be Availability or Appointment
-def add_to_calendar(summary, doctor_id, date, time_start, time_end):
+def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id):
     year, month, day = map(int, date.split('-'))
     startHour, startMinute = map(int, time_start.split(':'))
     endHour, endMinute = map(int, time_end.split(':'))
@@ -221,7 +236,7 @@ def add_to_calendar(summary, doctor_id, date, time_start, time_end):
             ],
         }
     }
-    event = service.events().insert(calendarId=google_calendar_id, body=event).execute()
+    event = service.events().insert(calendarId=calendar_id, body=event).execute()
     return event['id']
 
 

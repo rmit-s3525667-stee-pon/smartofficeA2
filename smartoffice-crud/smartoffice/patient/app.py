@@ -1,7 +1,12 @@
 from flask import Blueprint
 from flask import Flask, request, jsonify
 import sys
-sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+
+# Minh's pi
+# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
+# Bram and April's pi
+sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
+
 mod = Blueprint('patient',__name__,  template_folder='templates')
 
 from smartoffice import model
