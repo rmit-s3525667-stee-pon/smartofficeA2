@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-3">
+            <h2>{{ patient.name }}</h2>
+            <h5>Email:<br> {{ patient.email }}</h5>
+            <h5>Dob:<br>{{ patient.birthday }} </h5>
+            <h5>Phone:<br> {{ patient.phone }}</h5>
+        </div>
+        <br>
+        <div class="col-md-9">
+            <h3 class="text-center">History Appointments</h3>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Service</th>
+                        <th>Comments</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Joshep Dao</td>
+                        <td>17-09-2018</td>
+                        <td>Monthly Health Examination</td>
+                        <td></td>
+                        <td><button class="btn btn-danger">Get Medical Report</button></td>
+                    </tr>
+                    <tr>
+                        <td>Christopher</td>
+                        <td>17-09-2018</td>
+                        <td>Health Situation check</td>
+                        <td></td>
+                        <td><button class="btn btn-danger">Get Medical Report</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,97 @@
+<!------ Include the above in your HEAD tag ---------->
+<div class="container">
+        <div class="col-md-10 col-md-offset-1">
+            <h3>Doctor</h3>
+            <br>
+        <table class="table table-condensed">
+            <thead>
+                <form method="POST" action='{{url_for('patient.make_appointment')}}'>
+                    <select name="doctor_name" onchange="if(this.value != 0) { this.form.submit(); }">
+                            <option value="0"> Select a Doctor </option>
+                        {% for doctor in doctors %}
+                            <option value="{{doctor.id}}">{{ doctor.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </thead>
+        </table>
+    </div>
+    <hr>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="well-block">
+                <!-- <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="date">Preferred Date</label>
+                                <input id="date" name="date" type="text" placeholder="Preferred Date" class="form-control input-md">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="time">Preferred Time</label>
+                                <select id="time" name="time" class="form-control">
+                                    <option value="8:00 to 9:00">8:00 to 9:00</option>
+                                    <option value="9:00 to 10:00">9:00 to 10:00</option>
+                                    <option value="10:00 to 1:00">10:00 to 1:00</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-default">Make An Appointment</button>
+                            </div>
+                        </div>
+                        <div>
+                            <iframe src="https://calendar.google.com/calendar/embed?src=bramanthatedford%40rocketmail.com&ctz=Australia%2FHobart" style="border: 0"
+                                width="600" height="600" frameborder="0" scrolling="no"></iframe>
+                        </div>
+                    </div>
+                </form> -->
+                <h3 class="text-center">Available Appointments</h3>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Start Time</th>
+                            <th>Stop Time</th>
+                            <th>Doctor Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.date }}</td>
+                            <td>{{ appointment.time_start }}</td>
+                            <td>{{ appointment.time_end }}</td>
+                            {% for doctor in doctors %}
+                                {% if appointment.doctor_id == doctor.id %}
+                                    <td>{{ doctor.name }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            <form method="POST" action='{{url_for('patient.book_appointment')}}'>
+                                <input class="hidden" value='{{ appointment.id }}' name="appointment_id">
+                                <td><button type="submit" class="btn btn-success">Book</button></td>
+                            </form>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
+                not in message[1]: %}
+                <div class="alert alert-info">
+                    <strong>Success! </strong> {{ message[1] }}
+                </div>
+                {% endif %} {% if "Error" in message[1]: %}
+                <div class="alert alert-warning">
+                    {{ message[1] }}
+                </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
