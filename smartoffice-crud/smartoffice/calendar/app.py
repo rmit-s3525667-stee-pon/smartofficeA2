@@ -15,9 +15,11 @@ mod = Blueprint('calendar',__name__, template_folder='templates')
 from smartoffice import model
 
 
-@mod.route('/<id>', methods=['DELETE'])
-def remove_from_calendar(id):
-    model.remove_from_calendar(id)
+@mod.route('', methods=['DELETE'])
+def remove_from_calendar():
+    calendar_id = request.json["calendar_id"]
+    event_id = request.json["event_id"]
+    model.remove_from_calendar(calendar_id, event_id)
     return "Deleted"
 
 @mod.route('', methods=['POST'])

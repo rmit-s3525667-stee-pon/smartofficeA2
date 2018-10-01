@@ -8,9 +8,9 @@ import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-# sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
 # April's directory 
-sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
+# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
 
 import os
 app = Flask(__name__)

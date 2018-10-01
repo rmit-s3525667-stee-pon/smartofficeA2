@@ -37,7 +37,8 @@ def get_patients():
     patients = model.get_patients()
     return model.patients_schema.jsonify(patients)
 
-@mod.route('<id>/medical_record', methods=['GET'])
+@mod.route('/<id>/medical_record', methods=['GET'])
+# @mod.route('/medical_record/<id>', methods=['GET'])
 def get_patient_medical_record(id):
     records = model.get_patient_medical_record(id)
     return model.medical_records_schema.dumps(records, default = date_handler)

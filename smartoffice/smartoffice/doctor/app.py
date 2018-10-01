@@ -5,7 +5,7 @@ import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
+sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
 # April's directory 
 # sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 
@@ -16,6 +16,7 @@ from smartoffice import api_caller
 appointments_html = "doctor_appointments.html"
 calendar_html = "doctor_calendar.html"
 patient_record_html = "medical_record.html"
+upcoming_appointments_html = "upcoming_appointments.html"
 
 def loginState():
     if 'type' in session:
@@ -59,6 +60,27 @@ def calendar():
 	data_output = {
         'doctors': doctors,
         'content':calendar_html
+    }
+
+	return render_template('doctor_nav.html', **data_output)
+
+# see availabilities in calendar format
+@mod.route('/upcoming_appointments', methods=['GET', 'POST'])
+def upcoming_appointments():
+	redirect_link = loginState()
+	if redirect_link != None:
+		return redirect(redirect_link)
+
+	if request.method == 'POST':
+		patient_id = request.form['patient_id']
+		return redirect(url_for("doctor.patient_record", id = patient_id))
+
+	doctors = api_caller.get_doctor(int(session['id']))
+	appointments = api_caller.get_upcoming_appointments_by_doctor(int(session['id']))
+	data_output = {
+        'doctors': doctors,
+        'appointments': appointments,
+        'content':upcoming_appointments_html
     }
 
 	return render_template('doctor_nav.html', **data_output)
@@ -116,10 +138,13 @@ def remove_availability():
     doctor_id = request.form['doctor_id']
     date = request.form['date']
     time_start = request.form['time_start']
-    api_caller.remove_availability(availability_id)
-    api_caller.remove_from_calendar(event_id)
+    event_id = request.form['event_id']
+    calendar_id = request.form['calendar_id']
 
-    remove_appoinment_automatically(doctor_id, date, time_start)
+    api_caller.remove_availability(availability_id)
+    api_caller.remove_from_calendar(calendar_id, event_id)
+
+    remove_appoinment_automatically(calendar_id, doctor_id, date, time_start)
 
     return redirect(url_for("doctor.availabilities"))
 
@@ -129,6 +154,8 @@ def patient_record(id):
 	redirect_link = loginState()
 	if redirect_link != None:
 		return redirect(redirect_link)
+
+
 	patient = api_caller.get_patient(id)
 	records = api_caller.get_patient_medical_record(id)
 	doctor = api_caller.get_doctor(session['id'])
@@ -156,7 +183,7 @@ def add_record():
 	api_caller.add_medical_record(doctor_id, patient_id, date, notes, diagnoses)
 	return redirect(url_for("doctor.patient_record", id = patient_id))
 
-def remove_appoinment_automatically(doctor_id, date, time_start):
+def remove_appoinment_automatically(calendar_id, doctor_id, date, time_start):
 
 	appointments = api_caller.get_appointments()
 	appointments_dumps = json.dumps(appointments, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -172,6 +199,7 @@ def remove_appoinment_automatically(doctor_id, date, time_start):
 			if app['date'] == date:
 				if app['time_start'] == time_start_format:
 					api_caller.remove_appointment(app['id'])
+					api_caller.remove_from_calendar(calendar_id, app['event_id'])
 					st = st + datetime.timedelta(minutes = 15)
 					time_start_format = datetime.datetime.strftime(st, '%H:%M:%S')
 

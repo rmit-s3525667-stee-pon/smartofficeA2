@@ -53,7 +53,8 @@ class MedicalRecord():
         self.notes = notes
         self.diagnoses = diagnoses
 
-URL = 'http://10.132.137.219/'
+# URL = 'http://10.132.137.219/'
+URL = 'http://10.132.80.171/'
 patient_code = 'patient'
 doctor_code = 'doctor'
 clerk_code = 'clerk'
@@ -493,10 +494,17 @@ def remove_availability(id):
 
 # Calendar API Caller
 
-def remove_from_calendar(id):
-    url = URL + calendar_code + "/" + str(id)
+def remove_from_calendar(calendar_id, event_id):
+    url = URL + calendar_code
+    data_send = {
+        "calendar_id": calendar_id,
+        "event_id": event_id
+    }
     try:
-        response = requests.delete(url)
+        response = requests.delete(url,
+            data = json.dumps(data_send),
+            headers = {'Content-Type':'application/json'}
+            )
         print("Remove Event")
         return True
     except:
@@ -526,6 +534,7 @@ def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id)
 
 def get_patient_medical_record(id):
     url = URL + patient_code +"/" + str(id) + "/medical_record"
+    # url = URL + patient_code + "/medical_record" + str(id)
     records = []
     try:
         response = requests.get(url)

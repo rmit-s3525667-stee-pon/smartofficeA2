@@ -242,8 +242,8 @@ def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id)
     return event['id']
 
 
-def remove_from_calendar(event_id):
-    service.events().delete(calendarId=google_calendar_id, eventId=event_id).execute()
+def remove_from_calendar(calendar_id, event_id):
+    service.events().delete(calendarId=calendar_id, eventId=event_id).execute()
 
 
 def get_appointment(id):
