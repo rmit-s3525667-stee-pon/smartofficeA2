@@ -5,7 +5,7 @@ import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
 # April's directory 
 # sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 
@@ -15,6 +15,7 @@ from smartoffice import api_caller
 
 appointments_html = "doctor_appointments.html"
 calendar_html = "doctor_calendar.html"
+patient_record_html = "medical_record.html"
 
 def loginState():
     if 'type' in session:
@@ -122,6 +123,38 @@ def remove_availability():
 
     return redirect(url_for("doctor.availabilities"))
 
+
+@mod.route('/medical_record/<id>')
+def patient_record(id):
+	redirect_link = loginState()
+	if redirect_link != None:
+		return redirect(redirect_link)
+	patient = api_caller.get_patient(id)
+	records = api_caller.get_patient_medical_record(id)
+	doctor = api_caller.get_doctor(session['id'])
+	doctors = api_caller.get_doctors()
+	date = datetime.datetime.now()
+	date = datetime.datetime.strftime(date, "%Y-%m-%d")
+	data_output = {
+		'date':date,
+		'records':records,
+		'patient':patient,
+		'doctor':doctor,
+		'doctors':doctors,
+        'content':patient_record_html
+    }
+	return render_template('doctor_nav.html', **data_output)
+
+@mod.route('medical_record',methods=['POST'])
+def add_record():
+	doctor_id = session['id']
+	patient_id = request.form['patient_id']
+	date = datetime.datetime.now()
+	date = datetime.datetime.strftime(date, "%Y-%m-%d")
+	notes = request.form['notes']
+	diagnoses = request.form['diagnoses']
+	api_caller.add_medical_record(doctor_id, patient_id, date, notes, diagnoses)
+	return redirect(url_for("doctor.patient_record", id = patient_id))
 
 def remove_appoinment_automatically(doctor_id, date, time_start):
 

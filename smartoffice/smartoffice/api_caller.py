@@ -43,9 +43,17 @@ class Availability():
         self.time_start = time_start
         self.time_end = time_end
         self.event_id = event_id
-        
 
-URL = 'http://10.132.80.171/'
+class MedicalRecord():
+    def __init__(self, id, doctor_id, patient_id, date, notes, diagnoses):
+        self.id = id
+        self.doctor_id = doctor_id
+        self.patient_id = patient_id
+        self.date = date
+        self.notes = notes
+        self.diagnoses = diagnoses
+
+URL = 'http://10.132.137.219/'
 patient_code = 'patient'
 doctor_code = 'doctor'
 clerk_code = 'clerk'
@@ -510,7 +518,43 @@ def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id)
             data = json.dumps(data_send),
             headers = {'Content-Type':'application/json'}
             )
-        print("A new event added to Calendar")
-        return True
+        event_id = response.json()
+        return event_id
     except:
         print("Unable to add event into the Calendar, Error Occur")
+        return ""
+
+def get_patient_medical_record(id):
+    url = URL + patient_code +"/" + str(id) + "/medical_record"
+    records = []
+    try:
+        response = requests.get(url)
+        json_data = response.json()
+        for record_json in json_data:
+            record = MedicalRecord(record_json['id'], record_json['doctor_id'], 
+                record_json['patient_id'], record_json['date'], record_json['notes'],
+                record_json['diagnoses'])
+            records.append(record)
+        return records
+    except:
+        return None
+
+def add_medical_record(doctor_id, patient_id, date, notes, diagnoses):
+    url = URL + patient_code + "/medical_record"
+    data_send = {
+        "doctor_id": doctor_id,
+        "patient_id": patient_id,
+        "date": date,
+        "notes":notes,
+        "diagnoses":diagnoses
+    }
+    try: 
+        response = requests.post(url,
+            data = json.dumps(data_send),
+            headers = {'Content-Type':'application/json'}
+            )
+        print("Record Added")
+        return True
+    except:
+        print("Error Occur")
+        return False

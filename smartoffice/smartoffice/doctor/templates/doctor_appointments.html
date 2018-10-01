@@ -34,7 +34,6 @@
                         <th>Date</th>
                         <th>Start Time</th>
                         <th>Stop Time</th>
-                        <th>Patient Name</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -57,7 +56,6 @@
                                 {% endif %}
                             {% endfor %} -->
                         {% else %}
-                            <td>Available</td>
                             <td>
                                 <form method="POST" action='{{ url_for('doctor.remove_availability')}}'>
                                     <input type ="text" class="hidden" value ='{{ availability.id }}' name='availability_id'>

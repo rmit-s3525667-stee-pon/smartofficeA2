@@ -3,6 +3,7 @@ from flask import Flask, render_template, session, url_for, redirect, request
 
 import time
 import sys
+import json
 
 # Minh's pi
 # sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
@@ -27,5 +28,5 @@ def add_to_calendar():
     time_start = request.json['time_start']
     time_end = request.json['time_end']
     calendar_id = request.json['calendar_id']
-    model.add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id)
-    return "Added"
+    event_id = model.add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id)
+    return json.dumps(event_id)

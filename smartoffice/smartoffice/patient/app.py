@@ -4,7 +4,7 @@ import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
 # April's directory 
 # sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 
@@ -94,7 +94,11 @@ def profile():
     if redirect_link != None:
         return redirect(redirect_link)
     patient = api_caller.get_patient(session['id'])
+    records = api_caller.get_patient_medical_record(session['id'])
+    doctors = api_caller.get_doctors()
     data_output = {
+            'doctors':doctors,
+            'records':records,
             'patient':patient,
             'content':profile_html
             }

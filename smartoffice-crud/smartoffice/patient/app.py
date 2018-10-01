@@ -11,6 +11,10 @@ mod = Blueprint('patient',__name__,  template_folder='templates')
 
 from smartoffice import model
 
+
+def date_handler(obj):
+    return obj.isoformat() if hasattr(obj, 'isoformat') else obj
+
 # Add a Patient to the system
 @mod.route('',methods=['POST'])
 def add_patient():
@@ -33,5 +37,17 @@ def get_patients():
     patients = model.get_patients()
     return model.patients_schema.jsonify(patients)
 
+@mod.route('<id>/medical_record', methods=['GET'])
+def get_patient_medical_record(id):
+    records = model.get_patient_medical_record(id)
+    return model.medical_records_schema.dumps(records, default = date_handler)
 
-
+@mod.route('/medical_record', methods=['POST'])
+def add_medical_record():
+    doctor_id = request.json['doctor_id']
+    patient_id = request.json['patient_id']
+    date = request.json['date']
+    notes = request.json['notes']
+    diagnoses = request.json['diagnoses']
+    record = model.add_medical_record(doctor_id, patient_id, date, notes, diagnoses)
+    return model.medical_record_schema.dumps(record)

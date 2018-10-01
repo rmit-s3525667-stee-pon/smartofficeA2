@@ -7,11 +7,9 @@
             <h5>Phone:<br> {{ patient.phone }}</h5>
         </div>
         <br>
+        
         <div class="col-md-9">
             <h2 class="text-center">Medical Record</h2>
-            {% if records == None or records == [] %}
-                <h3 class="text-center">You have no prior records</h3>
-            {% endif %}
             {% for record in records %}
             <div>
                 <div class="form-group col-md-4">
@@ -37,6 +35,31 @@
                 <hr class="col-xs-12" style="border-top: 2px dashed #8c8b8b;">
             </div>
             {% endfor %}
+            <div>
+                <form method="POST" action='{{url_for('doctor.add_record')}}'>
+                    <div class="form-group col-md-4">
+                        <label class="control-label" for="name">Doctor</label>
+                        <input id="name" name="name" type="text" value='{{doctor.name}}' class="form-control input-md" disabled>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label">Date</label>
+                        <h5>{{date}}</h5>
+                    </div>
+                    <div class="form-group col-md-11">
+                        <label class="control-label" for="diagnoses">Diagnoses</label>
+                        <textarea id="diagnoses"  rows="5" name="diagnoses" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group col-md-11">
+                        <label class="control-label" for="notes">Notes</label>
+                        <textarea name="notes" rows="5" id="notes" class="form-control"></textarea>
+                    </div>
+                    <input type="text" name="patient_id" id="patient_id" class="hidden" value='{{ patient.id }}''>
+                    <div class="form-group text-center col-md-5">
+                        <button type="submit" id="submit" name="submit" class="btn btn-default btn-primary">Add notes and dianoses</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </div>

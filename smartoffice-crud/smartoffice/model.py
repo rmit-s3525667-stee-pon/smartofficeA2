@@ -105,21 +105,23 @@ class MedicalRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique = False)
     patient_id = db.Column(db.Integer, unique = False)
-    appointment_id = db.Column(db.Integer, unique = True)
+    date = db.Column(db.Date, unique=False)
     notes = db.Column(db.String(3000), unique = False)
+    diagnoses = db.Column(db.String(3000), unique = False)
 
-    def __init__(self, doctor_id, patient_id, appointment_id, notes):
+    def __init__(self, doctor_id, patient_id, date, notes, diagnoses):
         self.doctor_id = doctor_id
         self.patient_id = patient_id
-        self.appointment_id = appointment_id
+        self.date = date
         self.notes = notes
+        self.diagnoses = diagnoses
 
 class MedicalRecordSchema(ma.Schema):
     class Meta:
-        fields = ('id','doctor_id','patient_id','appointment_id', 'notes')
+        fields = ('id','doctor_id','patient_id','date', 'notes','diagnoses')
 
-medical_report_schema = AppointmentSchema()
-medical_reports_schema = AppointmentSchema(many = True)
+medical_record_schema = MedicalRecordSchema()
+medical_records_schema = MedicalRecordSchema(many = True)
 
 class Availability(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -316,7 +318,14 @@ def unbook_appointment(appointment_id):
     db.session.commit()
     return appointment
 
+def add_medical_record(doctor_id, patient_id, date, notes, diagnoses):
+    new_record = MedicalRecord(doctor_id, patient_id, date, notes, diagnoses)
+    db.session.add(new_record)
+    db.session.commit()
 
+def get_patient_medical_record(id):
+    records = MedicalRecord.query.filter(MedicalRecord.patient_id == id).order_by(MedicalRecord.date).all()
+    return records
 
 
 
