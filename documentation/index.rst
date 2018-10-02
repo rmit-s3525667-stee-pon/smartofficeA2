@@ -13,7 +13,8 @@ The following parts are the components of the application.
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
+   
+   api
    doctor
    patient
    clerk
