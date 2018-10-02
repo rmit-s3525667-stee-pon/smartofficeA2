@@ -1,9 +1,16 @@
+"""This module contains functions that make requests to the API"""
+
 import requests
 import json
 from datetime import datetime
 
 
 class Patient():
+    """
+    Initialise Patient. 
+
+    A patient has id, name, phone, birthday and email
+    """
     def __init__(self, id, name, phone, birthday, email):
         self.id = id
         self.name = name
@@ -12,6 +19,12 @@ class Patient():
         self.email = email
 
 class Doctor():
+    """
+    Initialise doctor.
+
+    A doctor has id, name, email, major and an
+    unique calendar
+    """
     def __init__(self, id, name, email, major, calendar_id):
         self.id = id
         self.name = name
@@ -20,13 +33,24 @@ class Doctor():
         self.calendar_id = calendar_id
 
 class Clerk():
+    """
+    Initialise clerk
+    
+    Clerk has id, name and email
+    """
     def __init__(self, id, name, email):
         self.id = id
         self.name = name
         self.email = email
     
 class Appointment():
-    def __init__(self, id, doctor_id, date, time_start, time_end, patient_id, event_id):
+    """
+    Initialise the appointment model
+
+    An appointment contain id, doctor's id, patient's id
+    event id, time start and end
+    """
+    def __init__(self, id, doctor_id, date, time_start, time_end, patient_id, event_id):        
         self.id = id
         self.doctor_id = doctor_id
         self.date = date
@@ -36,6 +60,12 @@ class Appointment():
         self.event_id = event_id
 
 class Availability():
+    """
+    Initialise doctor's availability model
+    
+    Doctor's availability has date, event id, time
+    start and end.
+    """
     def __init__(self, id, doctor_id, date, time_start, time_end, event_id):
         self.id = id
         self.doctor_id = doctor_id
@@ -56,6 +86,7 @@ calendar_code = 'calendar'
 
 # Patient API caller
 def get_patient(id):
+    """Get a patient using the API"""
     url = URL + patient_code + "/"+ str(id)
     try:
         response = requests.get(url)
@@ -67,8 +98,9 @@ def get_patient(id):
         print("Error Occur")
         return None
 
-    # add patient to the system
+# Add patient to the system
 def add_patient(name, phone, birthday, email):
+    """This function is used to add patient to the database"""
     url = URL + patient_code
     data_send = {
         "name": name,
@@ -86,8 +118,10 @@ def add_patient(name, phone, birthday, email):
     except:
         print("Unable to add patient, Error Occur")
         return False
-    # get all the patients
+
+# Get all the patients
 def get_patients():
+    """Get and return all patient from the database"""
     url = URL + patient_code
     patients = []
     try:
@@ -103,8 +137,9 @@ def get_patients():
         return None
 
 # Doctor API caller
-    # get all the doctor
+# Get all the doctor
 def get_doctors():
+    """This function gets and return all doctors from the database"""
     url = URL + doctor_code
     doctors = []
     try: 
@@ -119,8 +154,9 @@ def get_doctors():
         print("Unable to get doctors, Error Occur")
         return None
 
-    # add doctor to the system
+# Add doctor to the system
 def add_doctor( name, major, email, calendar_id):
+    """Add doctor to the database"""
     url = URL + doctor_code
     data_send = {
         "name": name,
@@ -139,7 +175,9 @@ def add_doctor( name, major, email, calendar_id):
         print("Unable to add doctor, Error Occur")
         return False
 
+# Get a specific doctor
 def get_doctor(id):
+    """Get a specific doctor by calling the doctor's id"""
     url = URL + doctor_code + "/"+ str(id)
     doctors = []
     try:
@@ -152,8 +190,9 @@ def get_doctor(id):
         print("Error Occur")
         return None
 
-# get all the clerks
+# Get all the clerks
 def get_clerks():
+    """Get and return all the clerks from the system"""
     url = URL + clerk_code
     clerks = []
     try:
@@ -168,8 +207,9 @@ def get_clerks():
         print("Unable to get clerks, Error Occur")
         return None
 
-  # add clerk to the system
+# Add clerk to the system
 def add_clerk(name, email):
+    """Add clerk to the database"""
     url = URL + clerk_code
     data_send = {
         "name": name,
@@ -186,8 +226,9 @@ def add_clerk(name, email):
         print("Unable to add clerk, Error Occur")
         return False
 
-
+# Get a specific clerk
 def get_clerk(id):
+    """Get a specific clerk by that clerk's id"""
     url = URL + clerk_code + "/"+ str(id)
     try:
         response = requests.get(url)
@@ -198,9 +239,11 @@ def get_clerk(id):
     except:
         print("Error Occur")
         return None
+
 # Appointment API Caller
-    # add a appointment
+# Add a appointment
 def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id):
+    """Add an appointment to the system"""
     url = URL + appointment_code
     data_send = {
         "doctor_id": doctor_id,
@@ -221,7 +264,7 @@ def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id)
         print("Unable to add Appointment, Error Occur")
         return False
 
-    # Get All Appointments
+# Get all appointments
 def get_appointments():
     url = URL + appointment_code
     appointments = []
@@ -241,8 +284,12 @@ def get_appointments():
         print("Unable to get Appointments, Error Occur")
         return None
 
-    # Get Appointment by Id        
+# Get Appointment by Id        
 def get_appointment(id):
+    """
+    Get an appointment from doctor or patient
+    by the appointment id
+    """
     url = URL + appointment_code + "/"+ str(id)
     try:
         response = requests.get(url)
@@ -258,7 +305,9 @@ def get_appointment(id):
         print("Unable to get Appointment, Error Occur")
         return None
 
+# Remove an appointment
 def remove_appointment(id):
+    """Remove the appointment by its id"""
     url = URL + appointment_code + "/" + str(id)
     try:
         response = requests.delete(url)
@@ -267,7 +316,12 @@ def remove_appointment(id):
         print("Cannot delete appointment, Error Occur")
         return False
 
+# Get all available appointments
 def get_available_appointments():
+    """
+    Get all of the appoinments that is still
+    available to allocate.
+    """
     url = URL + appointment_code + "/available"
     appointments = []
     try:
@@ -286,7 +340,12 @@ def get_available_appointments():
         print("Unable to get Appointments, Error Occur")
         return None
 
+# Get available apointment by doctor
 def get_available_appointments_by_doctor(id):
+    """
+    Get all of the available appointment
+    that has not been allocated by doctor's id
+    """
     url = URL + appointment_code + "/available/doctor/" + str(id)
     appointments = []
     try:
@@ -305,7 +364,12 @@ def get_available_appointments_by_doctor(id):
         print("Unable to get Appointments, Error Occur")
         return None
 
+# Get available appointment by patient
 def get_available_appointments_by_patient(id):
+    """
+    Get all of the available appointment
+    that has not been allocated by patient's id
+    """
     url = URL + appointment_code + "/available/patient/" + str(id)
     appointments = []
     try:
@@ -324,7 +388,12 @@ def get_available_appointments_by_patient(id):
         print("Unable to get Appointments, Error Occur")
         return None
 
+# Get the scheduled appointments by patient
 def get_appointments_by_patient(id):
+    """
+    Get the appointments that has been allocated by patient's id -
+    or in another way, a list of patient's scheduled appointments 
+    """
     url = URL + appointment_code + "/patient/" + str(id)
     appointments = []
     try:
@@ -343,7 +412,12 @@ def get_appointments_by_patient(id):
         print("Unable to get Appointments, Error Occur")
         return None
 
+# Get the scheduled appointments by doctor
 def get_appointments_by_doctor(id):
+    """
+    Get a list of doctor's scheduled appointments 
+    by doctor's id
+    """
     url = URL + appointment_code + "/doctor/" + str(id)
     appointments = []
     try:
@@ -362,7 +436,9 @@ def get_appointments_by_doctor(id):
         print("Unable to get Appointments, Error Occur")
         return None
 
+# Get the upcoming doctor's appointments 
 def get_upcoming_appointments_by_doctor(id):
+    """Get doctor's next scheduled appointments"""
     url = URL + appointment_code + "/doctor/next/" + str(id)
     appointments = []
     try:
@@ -381,7 +457,12 @@ def get_upcoming_appointments_by_doctor(id):
         print("Unable to get Appointments, Error Occur")
         return None
 
+# Book appointment
 def book_appointment(appointment_id, patient_id):
+    """
+    Get the available appointment id and patient id 
+    then allocate the patient with that appointment 
+    """
     url = URL + appointment_code + "/book"
     data_send = {
         "appointment_id": appointment_id,
@@ -398,7 +479,12 @@ def book_appointment(appointment_id, patient_id):
         print("Unable to Book the appointment, Error Occur")
         return False
 
+# Unbook an appointment
 def unbook_appointment(appointment_id):
+    """
+    Update the appointment, removing the patient's id
+    so the appointment becomes available 
+    """
     url = URL + appointment_code + "/unbook"
     data_send = {
         "appointment_id": appointment_id
@@ -417,7 +503,12 @@ def unbook_appointment(appointment_id):
 
 
 # Availability API Caller
+# Add doctor's availability
 def add_availability(doctor_id, date, time_start, time_end, event_id):
+    """
+    Add doctor's availbility to the system
+    by adding date, time start and end
+    """
     url = URL + availability_code
     data_send = {
         "doctor_id": doctor_id,
@@ -437,7 +528,11 @@ def add_availability(doctor_id, date, time_start, time_end, event_id):
         print("Unable to add Availability to the system, Error Occur")
         return False
 
+# Get doctor's availability
 def get_availability():
+    """
+    Get and return doctor's list of availability
+    """
     url = URL + availability_code
     availabilities = []
     try:
@@ -455,6 +550,7 @@ def get_availability():
         print("Unable to retrieve availabilities, Error Occur")
         return None
 
+#############################
 def get_availability_by_doctor(id):
     url = URL + availability_code + "/doctor/" + str(id)
     availabilities = []
@@ -473,7 +569,9 @@ def get_availability_by_doctor(id):
         print("Unable to retrieve availabilities, Error Occur")
         return None
 
+# Remove doctor's availability
 def remove_availability(id):
+    """Remove doctor's availability by availability session id"""
     url = URL + availability_code + "/" + str(id)
     try: 
         response = requests.delete(url)
@@ -485,7 +583,9 @@ def remove_availability(id):
 
 # Calendar API Caller
 
+# Remove event (booked appointment) on the calendar
 def remove_from_calendar(id):
+    """Remove the appointment from the calendar"""
     url = URL + calendar_code + "/" + str(id)
     try:
         response = requests.delete(url)
@@ -495,7 +595,9 @@ def remove_from_calendar(id):
         print("Unable to remove event, Error Occur")
         return False
 
+# Add event to the calendar
 def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id):
+    """Send the data and add the event to the Google Calendar"""
     url = URL + calendar_code
     data_send = {
         "summary": summary,
