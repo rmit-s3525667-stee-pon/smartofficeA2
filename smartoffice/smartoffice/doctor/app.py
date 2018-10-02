@@ -1,5 +1,5 @@
 from flask import Blueprint
-from flask import Flask, render_template, session, url_for, redirect, request
+from flask import Flask, render_template, session, url_for, redirect, request, flash
 import time, datetime, json
 import sys
 # Pi's directory
@@ -17,6 +17,7 @@ appointments_html = "doctor_appointments.html"
 calendar_html = "doctor_calendar.html"
 patient_record_html = "medical_record.html"
 upcoming_appointments_html = "upcoming_appointments.html"
+all_appointments_html = "all_appointments.html"
 
 def loginState():
     if 'type' in session:
@@ -85,13 +86,42 @@ def upcoming_appointments():
 
 	return render_template('doctor_nav.html', **data_output)
 
-# add an availability
-@mod.route('/add_availability', methods=['POST'])
-def add_availability():
+@mod.route('/all_appointments', methods=['GET'])
+def all_appointments():
 	redirect_link = loginState()
 	if redirect_link != None:
 		return redirect(redirect_link)
 
+	doctors = api_caller.get_doctor(int(session['id']))
+	appointments = api_caller.get_appointments_by_doctor(int(session['id']))
+	data_output = {
+        'doctors': doctors,
+        'appointments': appointments,
+        'content':all_appointments_html
+    }
+
+	return render_template('doctor_nav.html', **data_output)
+
+
+# add an availability
+@mod.route('/add_availability', methods=['POST'])
+def add_availability():
+	today = datetime.datetime.now()
+	distance_to_sunday = 7 - today.isoweekday()
+	eotw = today + datetime.timedelta(days=distance_to_sunday)
+	eonw = eotw + datetime.timedelta(days=7)
+
+	end_of_this_week = eotw.strftime("%Y-%m-%d")
+	end_of_next_week = eonw.strftime("%Y-%m-%d")
+
+	redirect_link = loginState()
+	if redirect_link != None:
+		return redirect(redirect_link)
+
+	# form = ReusableFormAvailability(request.form)
+	# print (form.errors)
+
+	# if form.validate() :
 	date = request.form['date']
 	doctor_id = session['id']
 	time_start = request.form['time_start']
@@ -99,12 +129,15 @@ def add_availability():
 	summary = request.form['doctor_name']
 	calendar_id = request.form['doctor_calendar_id']
 
-	event_id = api_caller.add_to_calendar(summary,doctor_id, date, time_start, time_end, calendar_id)
-	api_caller.add_availability(doctor_id, date, time_start, time_end, event_id)
-
-	add_appointment_automatically(doctor_id, date, time_start, time_end, calendar_id)
-
-	return redirect(url_for("doctor.availabilities"))
+	if end_of_this_week < date <= end_of_next_week :
+		event_id = api_caller.add_to_calendar(summary,doctor_id, date, time_start, time_end, calendar_id)
+		api_caller.add_availability(doctor_id, date, time_start, time_end, event_id)
+		add_appointment_automatically(doctor_id, date, time_start, time_end, calendar_id)
+		flash('Availability is successfully added')
+		return redirect(url_for("doctor.availabilities"))
+	else:
+		flash('Error: You can only add availability for next week')
+		return redirect(url_for("doctor.availabilities"))
 
 def add_appointment_automatically(doctor_id, date, time_start, time_end, calendar_id):
 	patient_id = None

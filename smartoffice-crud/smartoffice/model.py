@@ -295,8 +295,12 @@ def get_appointments_by_patient(id):
 
 def get_upcoming_appointments_by_doctor(id):
     now = datetime.datetime.now()
+    distance_to_sunday = 7 - now.isoweekday()
+    eow = now + datetime.timedelta(days=distance_to_sunday)
+    end_of_week = eow.strftime("%Y-%m-%d")
     currentdate = now.strftime("%Y-%m-%d")
-    appointments = Appointment.query.filter(Appointment.doctor_id == id).filter(Appointment.date >= currentdate).order_by(Appointment.date, Appointment.time_start).all()
+
+    appointments = Appointment.query.filter(Appointment.doctor_id == id).filter(end_of_week >= Appointment.date).order_by(Appointment.date, Appointment.time_start).all()
     return appointments
 
 # def get_past_appointments_by_doctor(id):
