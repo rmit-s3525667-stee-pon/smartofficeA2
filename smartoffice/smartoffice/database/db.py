@@ -1,3 +1,6 @@
+"""This module create and run database for the system"""
+
+
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
@@ -12,12 +15,15 @@ PASS = 'password'
 HOST = '35.201.22.140'
 DBNAME = 'smartoffice-db'
 
+# Open connection to the database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://{}:{}@{}/{}'.format(USER,PASS,HOST,DBNAME)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+# Patient database model
 class Patient(db.Model):
+    """Initialise Patient model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     phone = db.Column(db.String(80), unique=True)
@@ -32,12 +38,14 @@ class Patient(db.Model):
 
 class PatientSchema(ma.Schema):
     class Meta:
-        fields = ('name','phone','birthday','email')
-    
+        fields = ('name','phone','birthday','email')  
+
 patient_schema = PatientSchema()
 patients_schema = PatientSchema(many = True)
 
+# Doctor database model
 class Doctor(db.Model):
+    """Initialise Doctor model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     major = db.Column(db.String(120), unique=False)
@@ -55,7 +63,9 @@ class DoctorSchema(ma.Schema):
 doctor_schema = DoctorSchema()
 doctors_schema = DoctorSchema(many = True)
 
+# Clerk database model
 class Clerk(db.Model):
+    """Initialise Clerk model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(120), unique=True)
@@ -71,7 +81,9 @@ class ClerkSchema(ma.Schema):
 clerk_schema = ClerkSchema()
 clerks_schema = ClerkSchema(many = True)
 
+# Appointment database model
 class Appointment(db.Model):
+    """Initialise Appointment model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique=False)
     date = db.Column(db.Date, unique=False)
@@ -95,7 +107,9 @@ class AppointmentSchema(ma.Schema):
 appointment_schema = AppointmentSchema()
 appointments_schema = AppointmentSchema(many = True)
 
+# Medical Record database model
 class MedicalRecord(db.Model):
+    """Initialise Medical Record model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique = False)
     patient_id = db.Column(db.Integer, unique = False)
@@ -115,7 +129,9 @@ class MedicalRecordSchema(ma.Schema):
 medical_report_schema = AppointmentSchema()
 medical_reports_schema = AppointmentSchema(many = True)
 
+# Availability database model
 class Availability(db.Model):
+    """Initialise Availability model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique=False)
     date = db.Column(db.Date, unique=False)

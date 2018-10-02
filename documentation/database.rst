@@ -1,18 +1,23 @@
 Database
 ========
 
-Doctor table
+.. automodule:: db
 
+.. autoclass:: Patient
+   :members:
 
-Patient table
+.. autoclass:: Doctor
+   :members:
 
+.. autoclass:: Clerk
+   :members:
 
-Clerk table
+.. autoclass:: Appointment
+   :members:
 
+.. autoclass:: MedicalRecord
+   :members:
 
-Appointment table
-
-
-Medical Record table
-
+.. autoclass:: Availability
+   :members:
 

@@ -33,13 +33,45 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="database">
-<h1>Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h1>
-<p>Doctor table</p>
-<p>Patient table</p>
-<p>Clerk table</p>
-<p>Appointment table</p>
-<p>Medical Record table</p>
+  <div class="section" id="module-db">
+<span id="database"></span><h1>Database<a class="headerlink" href="#module-db" title="Permalink to this headline">¶</a></h1>
+<p>This module create and run database for the system</p>
+<dl class="class">
+<dt id="db.Patient">
+<em class="property">class </em><code class="descclassname">db.</code><code class="descname">Patient</code><span class="sig-paren">(</span><em>name</em>, <em>phone</em>, <em>birthday</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db.html#Patient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db.Patient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise Patient model in the database</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="db.Doctor">
+<em class="property">class </em><code class="descclassname">db.</code><code class="descname">Doctor</code><span class="sig-paren">(</span><em>name</em>, <em>major</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db.html#Doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db.Doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise Doctor model in the database</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="db.Clerk">
+<em class="property">class </em><code class="descclassname">db.</code><code class="descname">Clerk</code><span class="sig-paren">(</span><em>name</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db.html#Clerk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db.Clerk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise Clerk model in the database</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="db.Appointment">
+<em class="property">class </em><code class="descclassname">db.</code><code class="descname">Appointment</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>patient_id</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db.html#Appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db.Appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise Appointment model in the database</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="db.MedicalRecord">
+<em class="property">class </em><code class="descclassname">db.</code><code class="descname">MedicalRecord</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>patient_id</em>, <em>appointment_id</em>, <em>notes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db.html#MedicalRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db.MedicalRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise Medical Record model in the database</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="db.Availability">
+<em class="property">class </em><code class="descclassname">db.</code><code class="descname">Availability</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/db.html#Availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#db.Availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise Availability model in the database</p>
+</dd></dl>
+
 </div>
 
 
