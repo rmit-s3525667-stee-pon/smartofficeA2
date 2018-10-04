@@ -86,7 +86,7 @@ calendar_code = 'calendar'
 
 # Patient API caller
 def get_patient(id):
-    """Get a patient using the API"""
+    """Send request to get a patient using the API"""
     url = URL + patient_code + "/"+ str(id)
     try:
         response = requests.get(url)
@@ -100,7 +100,7 @@ def get_patient(id):
 
 # Add patient to the system
 def add_patient(name, phone, birthday, email):
-    """This function is used to add patient to the database"""
+    """Send request to add patient to the database"""
     url = URL + patient_code
     data_send = {
         "name": name,
@@ -121,7 +121,7 @@ def add_patient(name, phone, birthday, email):
 
 # Get all the patients
 def get_patients():
-    """Get and return all patient from the database"""
+    """Send request to get and return all patient from the database"""
     url = URL + patient_code
     patients = []
     try:
@@ -139,7 +139,7 @@ def get_patients():
 # Doctor API caller
 # Get all the doctor
 def get_doctors():
-    """This function gets and return all doctors from the database"""
+    """Send request to get and return all doctors from the database"""
     url = URL + doctor_code
     doctors = []
     try: 
@@ -156,7 +156,7 @@ def get_doctors():
 
 # Add doctor to the system
 def add_doctor( name, major, email, calendar_id):
-    """Add doctor to the database"""
+    """Send request to add doctor to the database"""
     url = URL + doctor_code
     data_send = {
         "name": name,
@@ -177,7 +177,7 @@ def add_doctor( name, major, email, calendar_id):
 
 # Get a specific doctor
 def get_doctor(id):
-    """Get a specific doctor by calling the doctor's id"""
+    """Send request to get a specific doctor by calling the doctor's id"""
     url = URL + doctor_code + "/"+ str(id)
     doctors = []
     try:
@@ -192,7 +192,7 @@ def get_doctor(id):
 
 # Get all the clerks
 def get_clerks():
-    """Get and return all the clerks from the system"""
+    """Send request to get and return all the clerks from the system"""
     url = URL + clerk_code
     clerks = []
     try:
@@ -209,7 +209,7 @@ def get_clerks():
 
 # Add clerk to the system
 def add_clerk(name, email):
-    """Add clerk to the database"""
+    """Send request to add a clerk to the database"""
     url = URL + clerk_code
     data_send = {
         "name": name,
@@ -228,7 +228,7 @@ def add_clerk(name, email):
 
 # Get a specific clerk
 def get_clerk(id):
-    """Get a specific clerk by that clerk's id"""
+    """Send request to get a specific clerk by that clerk's id"""
     url = URL + clerk_code + "/"+ str(id)
     try:
         response = requests.get(url)
@@ -243,7 +243,7 @@ def get_clerk(id):
 # Appointment API Caller
 # Add a appointment
 def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id):
-    """Add an appointment to the system"""
+    """Send request to add an appointment to the system"""
     url = URL + appointment_code
     data_send = {
         "doctor_id": doctor_id,
@@ -266,6 +266,7 @@ def add_appointment(doctor_id, date, time_start, time_end, patient_id, event_id)
 
 # Get all appointments
 def get_appointments():
+    """Send request to get all the appointments"""
     url = URL + appointment_code
     appointments = []
     try:
@@ -287,8 +288,8 @@ def get_appointments():
 # Get Appointment by Id        
 def get_appointment(id):
     """
-    Get an appointment from doctor or patient
-    by the appointment id
+    Send request to get an appointment from doctor 
+    or patient by the appointment id
     """
     url = URL + appointment_code + "/"+ str(id)
     try:
@@ -307,7 +308,7 @@ def get_appointment(id):
 
 # Remove an appointment
 def remove_appointment(id):
-    """Remove the appointment by its id"""
+    """Send request to remove the appointment by its id"""
     url = URL + appointment_code + "/" + str(id)
     try:
         response = requests.delete(url)
@@ -319,8 +320,8 @@ def remove_appointment(id):
 # Get all available appointments
 def get_available_appointments():
     """
-    Get all of the appoinments that is still
-    available to allocate.
+    Send request to get all of the appoinments that 
+    is still available to allocate.
     """
     url = URL + appointment_code + "/available"
     appointments = []
@@ -343,7 +344,7 @@ def get_available_appointments():
 # Get available apointment by doctor
 def get_available_appointments_by_doctor(id):
     """
-    Get all of the available appointment
+    Send request to get all of the available appointment
     that has not been allocated by doctor's id
     """
     url = URL + appointment_code + "/available/doctor/" + str(id)
@@ -367,7 +368,7 @@ def get_available_appointments_by_doctor(id):
 # Get available appointment by patient
 def get_available_appointments_by_patient(id):
     """
-    Get all of the available appointment
+    Send request to get all of the available appointment
     that has not been allocated by patient's id
     """
     url = URL + appointment_code + "/available/patient/" + str(id)
@@ -391,8 +392,7 @@ def get_available_appointments_by_patient(id):
 # Get the scheduled appointments by patient
 def get_appointments_by_patient(id):
     """
-    Get the appointments that has been allocated by patient's id -
-    or in another way, a list of patient's scheduled appointments 
+    Send request to get a list of patient's scheduled appointments 
     """
     url = URL + appointment_code + "/patient/" + str(id)
     appointments = []
@@ -415,8 +415,8 @@ def get_appointments_by_patient(id):
 # Get the scheduled appointments by doctor
 def get_appointments_by_doctor(id):
     """
-    Get a list of doctor's scheduled appointments 
-    by doctor's id
+    Send request to get a list of doctor's 
+    scheduled appointments by doctor's id
     """
     url = URL + appointment_code + "/doctor/" + str(id)
     appointments = []
@@ -438,7 +438,7 @@ def get_appointments_by_doctor(id):
 
 # Get the upcoming doctor's appointments 
 def get_upcoming_appointments_by_doctor(id):
-    """Get doctor's next scheduled appointments"""
+    """Send request to get doctor's next scheduled appointments"""
     url = URL + appointment_code + "/doctor/next/" + str(id)
     appointments = []
     try:
@@ -460,7 +460,7 @@ def get_upcoming_appointments_by_doctor(id):
 # Book appointment
 def book_appointment(appointment_id, patient_id):
     """
-    Get the available appointment id and patient id 
+    Send request to get the available appointment id and patient id 
     then allocate the patient with that appointment 
     """
     url = URL + appointment_code + "/book"
@@ -482,8 +482,8 @@ def book_appointment(appointment_id, patient_id):
 # Unbook an appointment
 def unbook_appointment(appointment_id):
     """
-    Update the appointment, removing the patient's id
-    so the appointment becomes available 
+    Send request to update the appointment, removing the 
+    patient's id so the appointment becomes available 
     """
     url = URL + appointment_code + "/unbook"
     data_send = {
@@ -506,7 +506,7 @@ def unbook_appointment(appointment_id):
 # Add doctor's availability
 def add_availability(doctor_id, date, time_start, time_end, event_id):
     """
-    Add doctor's availbility to the system
+    Send request to add doctor's availbility to the system
     by adding date, time start and end
     """
     url = URL + availability_code
@@ -531,7 +531,7 @@ def add_availability(doctor_id, date, time_start, time_end, event_id):
 # Get doctor's availability
 def get_availability():
     """
-    Get and return doctor's list of availability
+    Send request to get and return doctor's list of availability
     """
     url = URL + availability_code
     availabilities = []
@@ -571,7 +571,7 @@ def get_availability_by_doctor(id):
 
 # Remove doctor's availability
 def remove_availability(id):
-    """Remove doctor's availability by availability session id"""
+    """Send request to remove doctor's availability by availability session id"""
     url = URL + availability_code + "/" + str(id)
     try: 
         response = requests.delete(url)
@@ -585,7 +585,7 @@ def remove_availability(id):
 
 # Remove event (booked appointment) on the calendar
 def remove_from_calendar(id):
-    """Remove the appointment from the calendar"""
+    """Send request to remove the appointment from the calendar"""
     url = URL + calendar_code + "/" + str(id)
     try:
         response = requests.delete(url)
@@ -597,7 +597,7 @@ def remove_from_calendar(id):
 
 # Add event to the calendar
 def add_to_calendar(summary, doctor_id, date, time_start, time_end, calendar_id):
-    """Send the data and add the event to the Google Calendar"""
+    """Send request to add the event to the Google Calendar"""
     url = URL + calendar_code
     data_send = {
         "summary": summary,

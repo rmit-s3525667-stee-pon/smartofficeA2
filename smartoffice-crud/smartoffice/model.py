@@ -22,6 +22,7 @@ google_calendar_id = 'ujb115kig589rtaa9ecorfvfjo@group.calendar.google.com'
 
 
 class Patient(db.Model):
+    """Define Patient model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     phone = db.Column(db.String(80), unique=True)
@@ -42,6 +43,7 @@ patient_schema = PatientSchema()
 patients_schema = PatientSchema(many = True)
 
 class Doctor(db.Model):
+    """Define Doctor model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     major = db.Column(db.String(120), unique=False)
@@ -62,6 +64,7 @@ doctor_schema = DoctorSchema()
 doctors_schema = DoctorSchema(many = True)
 
 class Clerk(db.Model):
+    """Define Clerk model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False)
     email = db.Column(db.String(120), unique=False)
@@ -78,6 +81,7 @@ clerk_schema = ClerkSchema()
 clerks_schema = ClerkSchema(many = True)
 
 class Appointment(db.Model):
+    """Define Appointment model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique=False)
     date = db.Column(db.Date, unique=False)
@@ -102,6 +106,7 @@ appointment_schema = AppointmentSchema()
 appointments_schema = AppointmentSchema(many = True)
 
 class MedicalRecord(db.Model):
+    """Define Medical Record model in the database"""
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique = False)
     patient_id = db.Column(db.Integer, unique = False)
@@ -122,6 +127,7 @@ medical_report_schema = AppointmentSchema()
 medical_reports_schema = AppointmentSchema(many = True)
 
 class Availability(db.Model):
+    """Define Availability model in the database"""    
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, unique=False)
     date = db.Column(db.Date, unique=False)
