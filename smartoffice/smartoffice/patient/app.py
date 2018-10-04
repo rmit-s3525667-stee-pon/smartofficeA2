@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask,session, render_template, url_for, redirect, request
-import sys
+import sys, datetime
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
@@ -55,8 +55,22 @@ def make_appointment():
         doctor_id = request.form['doctor_name']
         appointments = api_caller.get_available_appointments_by_doctor(doctor_id)
 
+    index = 0
+    today = datetime.datetime.today()
+    today_str = today.isoweekday()
+    distance_to_sunday = 7 - today.isoweekday()
+    dates = [0] * (distance_to_sunday + 7)
+    days = [0] * (distance_to_sunday + 7)
+
+    for index in range(0, 7 + distance_to_sunday):
+        curr_date = today + datetime.timedelta(days=index + 7)
+        dates.insert(index, datetime.datetime.strftime(curr_date, "%Y-%m-%d"))
+        days.insert(index, datetime.datetime.strftime(curr_date, "%A"))
+
     doctors = api_caller.get_doctors()
     data_output = {
+        'dates' : dates,
+        'days': days,
         'doctors':doctors,
         'appointments':appointments,
         'content':make_appointment_html

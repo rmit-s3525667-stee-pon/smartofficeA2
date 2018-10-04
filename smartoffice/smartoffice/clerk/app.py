@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import Flask,session, render_template, url_for, redirect, request
+import datetime
 import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
@@ -41,12 +42,26 @@ def clerkdashboard():
         appointment_id = request.form['appointment_id']
         api_caller.book_appointment(appointment_id, patient_id)
 
+    index = 0
+    today = datetime.datetime.today()
+    today_str = today.isoweekday()
+    distance_to_sunday = 7 - today.isoweekday()
+    dates = [0] * (distance_to_sunday + 7)
+    days = [0] * (distance_to_sunday + 7)
+
+    for index in range(0, 7 + distance_to_sunday):
+        curr_date = today + datetime.timedelta(days=index)
+        dates.insert(index, datetime.datetime.strftime(curr_date, "%Y-%m-%d"))
+        days.insert(index, datetime.datetime.strftime(curr_date, "%A"))
+
     patients = api_caller.get_patients()
     doctors = api_caller.get_doctors()
     appointments = api_caller.get_appointments()
     data_output = {
         'patients':patients,
         'doctors': doctors,
+        'dates': dates,
+        'days': days,
         'appointments':appointments,
         'content':show_appointment_html
     }

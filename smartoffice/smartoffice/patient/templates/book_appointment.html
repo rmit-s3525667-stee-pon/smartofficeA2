@@ -62,8 +62,23 @@
                             <th></th>
                         </tr>
                     </thead>
+                    {% for date in dates %} 
+                    {% if date != 0 %}
+
                     <tbody>
+                    <tr>
+                        <th rowspan="100"> {{days[loop.index0]}} <br> {{date}} </th>
+                        <!-- <th rowspan="4"> {{date}} </th> -->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+
                         {% for appointment in appointments %}
+                        {% if appointment.date == date %}
                         <tr>
                             <td>{{ appointment.date }}</td>
                             <td>{{ appointment.time_start }}</td>
@@ -78,8 +93,13 @@
                                 <td><button type="submit" class="btn btn-success">Book</button></td>
                             </form>
                         </tr>
-                        {% endfor %}
+                        {% endif %}
+                    {% endfor %}
                     </tbody>
+                    
+                    {% endif %}
+                    {% endfor %}
+                 
                 </table>
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
                 not in message[1]: %}

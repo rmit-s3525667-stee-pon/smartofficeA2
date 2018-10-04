@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import Flask, render_template, session, url_for, redirect, request, flash
-import time, datetime, json
+import time, datetime, json, calendar
 import sys
 # Pi's directory
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
@@ -38,6 +38,18 @@ def availabilities():
     if redirect_link != None:
         return redirect(redirect_link)
 
+    index = 0
+    today = datetime.datetime.today()
+    today_str = today.isoweekday()
+    distance_to_sunday = 7 - today.isoweekday()
+    dates = [0] * (distance_to_sunday + 7)
+    days = [0] * (distance_to_sunday + 7)
+
+    for index in range(0, 7):
+    	curr_date = today + datetime.timedelta(days=index +  distance_to_sunday)
+    	dates.insert(index, datetime.datetime.strftime(curr_date, "%Y-%m-%d"))
+    	days.insert(index, datetime.datetime.strftime(curr_date, "%A"))
+
     patients = api_caller.get_patients()
     availabilities = api_caller.get_availability_by_doctor(int(session['id']))
     doctors = api_caller.get_doctor(int(session['id']))
@@ -45,8 +57,10 @@ def availabilities():
         'patients':patients,
         'availabilities': availabilities,
         'doctors': doctors,
+        'dates' : dates,
+        'days': days,
         'content':appointments_html
-    }
+        }
 
     return render_template('doctor_nav.html', **data_output)
 
@@ -86,19 +100,43 @@ def upcoming_appointments():
 
 	return render_template('doctor_nav.html', **data_output)
 
-@mod.route('/all_appointments', methods=['GET'])
+@mod.route('/all_appointments', methods=['GET', 'POST'])
 def all_appointments():
 	redirect_link = loginState()
 	if redirect_link != None:
 		return redirect(redirect_link)
 
+	if request.method == 'GET':
+		appointments = api_caller.get_appointments_by_doctor(int(session['id']))
+		show_individual = None
+	elif request.method == 'POST':
+		input_date = request.form['input_date']
+		show_individual = True
+		appointments = api_caller.get_appointments_by_doctor_and_date(int(session['id']), input_date)
+
+	index = 0
+	today = datetime.datetime.today()
+	today_str = today.isoweekday()
+	distance_to_sunday = 7 - today.isoweekday()
+	dates = [0] * (distance_to_sunday + 7)
+	days = [0] * (distance_to_sunday + 7)
+
+	for index in range(0, 7 + distance_to_sunday):
+		curr_date = today + datetime.timedelta(days=index)
+		dates.insert(index, datetime.datetime.strftime(curr_date, "%Y-%m-%d"))
+		days.insert(index, datetime.datetime.strftime(curr_date, "%A"))
+
 	doctors = api_caller.get_doctor(int(session['id']))
-	appointments = api_caller.get_appointments_by_doctor(int(session['id']))
+	patients = api_caller.get_patients()
 	data_output = {
-        'doctors': doctors,
-        'appointments': appointments,
-        'content':all_appointments_html
-    }
+	'doctors': doctors,
+	'appointments': appointments,
+	'show_individual': show_individual,
+	'dates': dates,
+	'patients': patients,
+	'days': days,
+	'content':all_appointments_html
+	}
 
 	return render_template('doctor_nav.html', **data_output)
 
@@ -109,7 +147,7 @@ def add_availability():
 	today = datetime.datetime.now()
 	distance_to_sunday = 7 - today.isoweekday()
 	eotw = today + datetime.timedelta(days=distance_to_sunday)
-	eonw = eotw + datetime.timedelta(days=7)
+	eonw = eotw + datetime.timedelta(days=7 + distance_to_sunday)
 
 	end_of_this_week = eotw.strftime("%Y-%m-%d")
 	end_of_next_week = eonw.strftime("%Y-%m-%d")

@@ -289,6 +289,10 @@ def get_appointments_by_doctor(id):
     appointments = Appointment.query.filter(Appointment.doctor_id == id).order_by(Appointment.date, Appointment.time_start).all()
     return appointments
 
+def get_appointments_by_doctor_and_date(id, input_date):
+    appointments = Appointment.query.filter(Appointment.doctor_id == id).filter(Appointment.date == input_date).order_by(Appointment.date, Appointment.time_start).all()
+    return appointments
+
 def get_appointments_by_patient(id):
     appointments = Appointment.query.filter(Appointment.patient_id == id).order_by(Appointment.date, Appointment.time_start).all()
     return appointments

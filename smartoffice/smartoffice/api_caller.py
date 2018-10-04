@@ -371,6 +371,32 @@ def get_appointments_by_doctor(id):
         print("Unable to get Appointments, Error Occur")
         return None
 
+def get_appointments_by_doctor_and_date(doctor_id, input_date):
+    url = URL + appointment_code + "/doctor/bydate" 
+    data_send = {
+        "doctor_id": doctor_id,
+        "input_date": input_date
+    }
+    appointments = []
+    try:
+        response = requests.post(url,
+            data = json.dumps(data_send),
+            headers = {'Content-Type':'application/json'}
+            )
+        json_data = response.json()
+        for appointment_json in json_data:
+            appointment = Appointment(appointment_json['id'],
+                appointment_json['doctor_id'], appointment_json['date'], 
+                appointment_json['time_start'], appointment_json['time_end'], 
+                appointment_json['patient_id'], appointment_json['event_id']
+                )
+            appointments.append(appointment)
+        print("Retrieve Appointments")
+        return appointments
+    except:
+        print("Unable to get Appointments, Error Occur")
+        return None        
+
 def get_upcoming_appointments_by_doctor(id):
     url = URL + appointment_code + "/doctor/next/" + str(id)
     appointments = []

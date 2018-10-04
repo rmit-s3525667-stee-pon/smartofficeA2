@@ -72,6 +72,15 @@ def get_appointments_by_doctor(id):
     appointments = model.get_appointments_by_doctor(id)
     return model.appointments_schema.dumps(appointments, default = date_handler)
 
+# Get All Appointent of a Doctor by input date
+@mod.route('/doctor/bydate', methods=['POST'])
+def get_appointments_by_doctor_and_date():
+    doctor_id = request.json['doctor_id']
+    input_date = request.json['input_date']
+    appointments = model.get_appointments_by_doctor_and_date(doctor_id, input_date)
+    return model.appointments_schema.dumps(appointments, default = date_handler)
+
+
 # Get All Upcoming Appoinments of a Doctor
 @mod.route('/doctor/next/<id>', methods=['GET'])
 def get_upcoming_appoinments_by_doctor(id):

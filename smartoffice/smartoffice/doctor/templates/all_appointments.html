@@ -2,13 +2,24 @@
     <div class="row"><br><br>
         <div class="col-md-10 col-md-offset-1">
             <div class="well-block">
-                <h3 class="text-center">All Appointments</h3>
+                <h3 class="text-center">Upcoming Appointments</h3>
                 <table class="table table-condensed">
                     <thead>
+                        <form method="POST" action='{{url_for('doctor.all_appointments')}}'>
+                        <select name="input_date" 
+                        onchange="if(this.value != 0) { this.form.submit(); }">
+                                <option value="0"> Select a date </option>
+                            {% for date in dates %}
+                            {% if date != 0 %}
+                                <option value="{{date}}">{{ date }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </form>
                         <tr>
+                            <th>Date</th>
                             <th>Doctor</th>
                             <th>Patient</th>
-                            <th>Date</th>
                             <th>Start Time</th>
                             <th>End Time</th>
                             <th></th>
@@ -17,51 +28,85 @@
                             <th></th>
                         </tr>
                     </thead>
+
+                    {% for date in dates %} 
+                    {% if date != 0 %}
+
+                    {% if show_individual == None %}
+
+
+
                     <tbody>
-                            <tr>
+                    <tr>
+
+                        <th rowspan="10"> {{days[loop.index0]}} <br> {{date}} </th>
+                        <!-- <th rowspan="4"> {{date}} </th> -->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+                    
+                    {% endif %}
+                            
                         
                         {% for appointment in appointments %}
+                        {% if appointment.date == date %}
                         
-                        
-                        {% if appointment.doctor_id == doctors.id %}
-                        <td>{{ doctors.name }}</td>
-            
-                        {% endif %}
-            
-                        {% if appointment.patient_id == None %}
-       
-                                <td>Available</td> 
-    
-                        {% else %}
-                       
-                                <td> Booked </td>
-                        {% endif %}
-                       
+                        <tr>
+                            {% if show_individual == True %}
+                             <td>{{ appointment.date }}</td>
 
-                            <td>{{ appointment.date }}</td>
+                            {% endif %}
+                            {% if appointment.doctor_id == doctors.id %}
+                            <td>{{ doctors.name }}</td>
+                
+                            {% endif %}
+            
+                                {% if appointment.patient_id == None %}
+               
+                                        <td>Available</td> 
+            
+                                {% else %}
+                                    {% for patient in patients %}
+                                     {% if appointment.patient_id == patient.id %}
+                               
+                                        <td> {{patient.name}} </td>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                       
                             <td>{{ appointment.time_start }}</td>
                             <td>{{ appointment.time_end}}</td>
                       
-                      		{% if appointment.patient_id != None %}
-                            <td>
-                                    <form method="POST" action='{{url_for('doctor.upcoming_appointments')}}'>
-                                            <input class="hidden" value='{{ appointment.patient_id }}' name="patient_id">
-                                            <td><button type="submit" class="btn btn-info">Get Medical Record</button></td>
-                                        </form>
-                            </td>
-                             {% else %}
-                             <td>
-                                            <td><button type="submit" class="btn btn-default">Available</button></td>
-                             </td>
-                            {% endif %}
+                          		{% if appointment.patient_id != None %}
+                                <td>
+                                        <form method="POST" action='{{url_for('doctor.upcoming_appointments')}}'>
+                                                <input class="hidden" value='{{ appointment.patient_id }}' name="patient_id">
+                                                <td><button type="submit" class="btn btn-info">Get Medical Record</button></td>
+                                            </form>
+                                </td>
+                                 {% else %}
+                                 <td>
+                                                <td><button type="submit" class="btn btn-default">Available</button></td>
+                                 </td>
+                                {% endif %}
 
-                            
                         </tr>
                        
                     
+                    
+                    {% endif %}
+                    {% endfor %}
                     </tbody>
                     
+                    {% endif %}
+
                     {% endfor %}
+                    
+
                 </table>
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
                 not in message[1]: %}

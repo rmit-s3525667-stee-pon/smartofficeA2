@@ -17,15 +17,17 @@
     {% endfor %}
         {% endif %}
     {% endwith %}
+
     <div class="col-md-10 col-md-offset-1">
-        <h3 class="text-center">Create Availabilities</h3>
+        <!-- <h3 class="text-center">Create Availabilities</h3>
         <table class="table table-condensed">
          <thead>
 
                 <tr>
                     <th>Date</th>
                     <th>Start Time</th>
-                    <th>End Time</th>
+                    <th>Stop Time</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -44,21 +46,42 @@
                     </form>
                 </tr>
                 </tbody>
-        </table><br>
-             <h3 class="text-center">Upcoming Availabilities</h3>
+        </table><br> -->
+             <h3 class="text-center">Next Week's Availabilities</h3>
         <table class="table table-condensed">
                 <thead>
                     <tr>
+
                         <th>Date</th>
                         <th>Start Time</th>
                         <th>Stop Time</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for availability in availabilities%}
+               
+                {% for date in dates %} 
+                {% if date != 0 %}
+                
+                
+                <tbody> 
+                <tr>
+                        <th rowspan="4"> {{days[loop.index0]}} <br> {{date}} </th>
+                        <!-- <th rowspan="4"> Day <br> {{date}} </th> -->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                </tr>
+                
+                {% for availability in availabilities%}
+
+                
+                {% if availability.date == date%}
+                
+                    
                     <tr>
-                        <td>{{ availability.date }}</td>
                         <td>{{ availability.time_start }}</td>
                         <td>{{ availability.time_end }}</td>
                         {% if availability.doctor_id == None %}
@@ -87,9 +110,32 @@
                                 </form>
                             </td>
                         {% endif %}
+                        {% endif %}
                     </tr>
+                   
                     {% endfor %}
-            </tbody>
+                    <tr>
+                    <form method="POST" action='{{url_for('doctor.add_availability')}}'>
+                
+                        <td><input type="time"  name="time_start"></td>
+                        <td><input type="time" name="time_end"></td>
+
+                        <input type ="text" class="hidden" value ='{{ date }}' name='date'>
+                         <input type ="text" class="hidden" value ='{{ doctors.name }}' name='doctor_name'>
+                        <input type ="text" class="hidden" value ='{{ doctors.calendar_id }}' name='doctor_calendar_id'>
+                        <td><button type="submit" class="btn btn-success">Add Availability</button></td>
+
+                        
+                    </form>
+                </tr>
+                    
+                     </tbody>
+                     {% endif %}
+                    {% endfor %}
+                   
+
+                    
+           
         </table> <br>
     </div>
 </div>
