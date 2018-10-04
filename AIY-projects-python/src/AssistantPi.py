@@ -1,0 +1,1 @@
+examples/voice/assistant_library_with_local_commands_demo.py

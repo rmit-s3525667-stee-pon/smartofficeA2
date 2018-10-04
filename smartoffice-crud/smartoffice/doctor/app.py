@@ -33,3 +33,8 @@ def get_doctors():
 def get_doctor(id):
     doctor = model.get_doctor(id)
     return model.doctor_schema.jsonify(doctor)
+
+@mod.route('/name/<name>', methods=['GET'])
+def get_doctor_by_name(name):
+    doctor = model.get_doctor_by_name(name)
+    return model.doctor_schema.jsonify(doctor)

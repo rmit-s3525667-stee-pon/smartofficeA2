@@ -103,18 +103,17 @@ class MedicalRecord(db.Model):
     patient_id = db.Column(db.Integer, unique = False)
     date = db.Column(db.Date, unique=False)
     notes = db.Column(db.String(3000), unique = False)
-    diagnoses = db.Column(db.String(3000), unique = False)
 
-    def __init__(self, doctor_id, patient_id, date, notes, diagnoses):
+    def __init__(self, doctor_id, patient_id, date, notes):
         self.doctor_id = doctor_id
         self.patient_id = patient_id
         self.date = date
         self.notes = notes
-        self.diagnoses = diagnoses
 
 class MedicalRecordSchema(ma.Schema):
     class Meta:
-        fields = ('doctor_id','patient_id','date', 'notes','diagnoses')
+        fields = ('id','doctor_id','patient_id','date', 'notes')
+
 
 medical_record_schema = MedicalRecordSchema()
 medical_records_schema = MedicalRecordSchema(many = True)

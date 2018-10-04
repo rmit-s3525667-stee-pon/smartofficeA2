@@ -4,14 +4,14 @@ from wtforms import Form, TextField, TextAreaField, validators, StringField, Sub
 from wtforms_components import DateRange, Email
 from datetime import datetime, date
 from flask_bootstrap import Bootstrap
+
 import sys
 # Pi's directory
-# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
+sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+# sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
 # April's directory 
 # sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
-
 import os
 app = Flask(__name__)
 

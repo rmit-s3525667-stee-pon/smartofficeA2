@@ -3,9 +3,9 @@ from flask import Flask,session, render_template, url_for, redirect, request
 import datetime
 import sys
 # Pi's directory
-# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
+sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+#sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
 # April's directory 
 # sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 mod = Blueprint('clerk',__name__,  template_folder='templates')
