@@ -45,16 +45,15 @@ class Availability():
         self.event_id = event_id
 
 class MedicalRecord():
-    def __init__(self, id, doctor_id, patient_id, date, notes, diagnoses):
+    def __init__(self, id, doctor_id, patient_id, date, notes):
         self.id = id
         self.doctor_id = doctor_id
         self.patient_id = patient_id
         self.date = date
         self.notes = notes
-        self.diagnoses = diagnoses
 
 # URL = 'http://10.132.137.219/'
-URL = 'http://10.132.80.171/'
+URL = 'http://10.132.133.196/'
 patient_code = 'patient'
 doctor_code = 'doctor'
 clerk_code = 'clerk'
@@ -567,21 +566,21 @@ def get_patient_medical_record(id):
         json_data = response.json()
         for record_json in json_data:
             record = MedicalRecord(record_json['id'], record_json['doctor_id'], 
-                record_json['patient_id'], record_json['date'], record_json['notes'],
-                record_json['diagnoses'])
+                record_json['patient_id'], record_json['date'], record_json['notes'])
             records.append(record)
         return records
     except:
         return None
 
-def add_medical_record(doctor_id, patient_id, date, notes, diagnoses):
+def add_medical_record(doctor_id, patient_id, notes):
     url = URL + patient_code + "/medical_record"
+    date = datetime.now()
+    date = datetime.strftime(date, "%Y-%m-%d")
     data_send = {
         "doctor_id": doctor_id,
         "patient_id": patient_id,
         "date": date,
-        "notes":notes,
-        "diagnoses":diagnoses
+        "notes":notes
     }
     try: 
         response = requests.post(url,
@@ -593,3 +592,23 @@ def add_medical_record(doctor_id, patient_id, date, notes, diagnoses):
     except:
         print("Error Occur")
         return False
+
+def get_patient_by_name(name):
+    url = URL + patient_code + "/name/" + str(name)
+    try:
+        response = requests.get(url)
+        json_data = response.json()
+        patient = Patient(json_data['id'], json_data['name'], json_data['phone'], json_data['birthday'], json_data['email'])
+        return patient
+    except:
+        return None
+
+def get_doctor_by_name(name):
+    url = URL + doctor_code + "/name/" + str(name)
+    try:
+        response = requests.get(url)
+        json_data = response.json()
+        doctor = Doctor(json_data['id'], json_data['name'], json_data['email'], json_data['major'], json_data['calendar_id'])
+        return doctor
+    except:
+        return None

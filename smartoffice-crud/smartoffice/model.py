@@ -107,18 +107,16 @@ class MedicalRecord(db.Model):
     patient_id = db.Column(db.Integer, unique = False)
     date = db.Column(db.Date, unique=False)
     notes = db.Column(db.String(3000), unique = False)
-    diagnoses = db.Column(db.String(3000), unique = False)
 
-    def __init__(self, doctor_id, patient_id, date, notes, diagnoses):
+    def __init__(self, doctor_id, patient_id, date, notes):
         self.doctor_id = doctor_id
         self.patient_id = patient_id
         self.date = date
         self.notes = notes
-        self.diagnoses = diagnoses
 
 class MedicalRecordSchema(ma.Schema):
     class Meta:
-        fields = ('id','doctor_id','patient_id','date', 'notes','diagnoses')
+        fields = ('id','doctor_id','patient_id','date', 'notes')
 
 medical_record_schema = MedicalRecordSchema()
 medical_records_schema = MedicalRecordSchema(many = True)
@@ -326,14 +324,23 @@ def unbook_appointment(appointment_id):
     db.session.commit()
     return appointment
 
-def add_medical_record(doctor_id, patient_id, date, notes, diagnoses):
-    new_record = MedicalRecord(doctor_id, patient_id, date, notes, diagnoses)
+def add_medical_record(doctor_id, patient_id, date, notes):
+    new_record = MedicalRecord(doctor_id, patient_id, date, notes)
     db.session.add(new_record)
     db.session.commit()
 
 def get_patient_medical_record(id):
     records = MedicalRecord.query.filter(MedicalRecord.patient_id == id).order_by(MedicalRecord.date).all()
     return records
+
+def get_patient_by_name(name):
+    patient = Patient.query.filter(Patient.name == name).first()
+    return patient
+
+def get_doctor_by_name(name):
+    doctor = Doctor.query.filter(Doctor.name == name).first()
+    return doctor
+
 
 
 

@@ -3,9 +3,9 @@ from flask import Flask, render_template, session, url_for, redirect, request, f
 import time, datetime, json, calendar
 import sys
 # Pi's directory
-# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
+sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 # Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
+#sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
 # April's directory 
 # sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
 
@@ -247,11 +247,8 @@ def patient_record(id):
 def add_record():
 	doctor_id = session['id']
 	patient_id = request.form['patient_id']
-	date = datetime.datetime.now()
-	date = datetime.datetime.strftime(date, "%Y-%m-%d")
 	notes = request.form['notes']
-	diagnoses = request.form['diagnoses']
-	api_caller.add_medical_record(doctor_id, patient_id, date, notes, diagnoses)
+	api_caller.add_medical_record(doctor_id, patient_id, notes)
 	return redirect(url_for("doctor.patient_record", id = patient_id))
 
 def remove_appoinment_automatically(calendar_id, doctor_id, date, time_start):
