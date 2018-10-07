@@ -49,7 +49,7 @@ cv2.namedWindow("Saving Images... (Press Escape to end)")
 # Save up to 10 images
 img_counter = 0
 
-while img_counter < 15:
+while img_counter < 30:
     ret, frame = cam.read()
     cv2.imshow("test", frame)
     if not ret:

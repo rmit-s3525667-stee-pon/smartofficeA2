@@ -1,0 +1,375 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CRUD Functions &#8212; Smart Office Application 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Doctor" href="doctor.html" />
+    <link rel="prev" title="Welcome to Smart Office Application’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-model">
+<span id="crud-functions"></span><h1>CRUD Functions<a class="headerlink" href="#module-model" title="Permalink to this headline">¶</a></h1>
+<p>This module contain functions and class that directly communicate with the database</p>
+<dl class="class">
+<dt id="model.Appointment">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">Appointment</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>patient_id</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.Appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appointment Class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.AppointmentSchema">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">AppointmentSchema</code><span class="sig-paren">(</span><em>extra=None</em>, <em>only=None</em>, <em>exclude=()</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>context=None</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#AppointmentSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.AppointmentSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appointent Schema to format return data</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.Availability">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">Availability</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.Availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Availability Class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.AvailabilitySchema">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">AvailabilitySchema</code><span class="sig-paren">(</span><em>extra=None</em>, <em>only=None</em>, <em>exclude=()</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>context=None</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#AvailabilitySchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.AvailabilitySchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Availability Schema to format return data</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.Clerk">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">Clerk</code><span class="sig-paren">(</span><em>name</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Clerk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.Clerk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clerk Class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.ClerkSchema">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">ClerkSchema</code><span class="sig-paren">(</span><em>extra=None</em>, <em>only=None</em>, <em>exclude=()</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>context=None</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#ClerkSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.ClerkSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clerk Schema to format return data</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.Doctor">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">Doctor</code><span class="sig-paren">(</span><em>name</em>, <em>major</em>, <em>email</em>, <em>calendar_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.Doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Patient Class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.DoctorSchema">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">DoctorSchema</code><span class="sig-paren">(</span><em>extra=None</em>, <em>only=None</em>, <em>exclude=()</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>context=None</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#DoctorSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.DoctorSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Doctor Schema to format return data</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.MedicalRecord">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">MedicalRecord</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>patient_id</em>, <em>date</em>, <em>notes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#MedicalRecord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.MedicalRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Medical Record Class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.MedicalRecordSchema">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">MedicalRecordSchema</code><span class="sig-paren">(</span><em>extra=None</em>, <em>only=None</em>, <em>exclude=()</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>context=None</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#MedicalRecordSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.MedicalRecordSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Medical Record Schema to format return data</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.Patient">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">Patient</code><span class="sig-paren">(</span><em>name</em>, <em>phone</em>, <em>birthday</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Patient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.Patient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Doctor Class</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="model.PatientSchema">
+<em class="property">class </em><code class="descclassname">model.</code><code class="descname">PatientSchema</code><span class="sig-paren">(</span><em>extra=None</em>, <em>only=None</em>, <em>exclude=()</em>, <em>prefix=''</em>, <em>strict=None</em>, <em>many=False</em>, <em>context=None</em>, <em>load_only=()</em>, <em>dump_only=()</em>, <em>partial=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#PatientSchema"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.PatientSchema" title="Permalink to this definition">¶</a></dt>
+<dd><p>Patient Schema to format return data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_appointment">
+<code class="descclassname">model.</code><code class="descname">add_appointment</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>patient_id</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Appointment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_availability">
+<code class="descclassname">model.</code><code class="descname">add_availability</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add availability</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_calendar">
+<code class="descclassname">model.</code><code class="descname">add_calendar</code><span class="sig-paren">(</span><em>summary</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_calendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_calendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a calendar in google calendar</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_clerk">
+<code class="descclassname">model.</code><code class="descname">add_clerk</code><span class="sig-paren">(</span><em>name</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_clerk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_clerk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Clerk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_doctor">
+<code class="descclassname">model.</code><code class="descname">add_doctor</code><span class="sig-paren">(</span><em>name</em>, <em>email</em>, <em>major</em>, <em>calendar_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Doctor</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_medical_record">
+<code class="descclassname">model.</code><code class="descname">add_medical_record</code><span class="sig-paren">(</span><em>doctor_id</em>, <em>patient_id</em>, <em>date</em>, <em>notes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_medical_record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_medical_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add medical record</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_patient">
+<code class="descclassname">model.</code><code class="descname">add_patient</code><span class="sig-paren">(</span><em>name</em>, <em>phone</em>, <em>birthday</em>, <em>email</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_patient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_patient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Patient</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.add_to_calendar">
+<code class="descclassname">model.</code><code class="descname">add_to_calendar</code><span class="sig-paren">(</span><em>summary</em>, <em>doctor_id</em>, <em>date</em>, <em>time_start</em>, <em>time_end</em>, <em>calendar_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#add_to_calendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.add_to_calendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add event to calendar</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.book_appointment">
+<code class="descclassname">model.</code><code class="descname">book_appointment</code><span class="sig-paren">(</span><em>appointment_id</em>, <em>patient_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#book_appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.book_appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Book appointment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_appointment">
+<code class="descclassname">model.</code><code class="descname">get_appointment</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Appointment by ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_appointments">
+<code class="descclassname">model.</code><code class="descname">get_appointments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_appointments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_appointments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get All Appointments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_appointments_by_doctor">
+<code class="descclassname">model.</code><code class="descname">get_appointments_by_doctor</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_appointments_by_doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_appointments_by_doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get appointments by doctor ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_appointments_by_doctor_and_date">
+<code class="descclassname">model.</code><code class="descname">get_appointments_by_doctor_and_date</code><span class="sig-paren">(</span><em>id</em>, <em>input_date</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_appointments_by_doctor_and_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_appointments_by_doctor_and_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get available appointments by doctor ID and Date</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_appointments_by_patient">
+<code class="descclassname">model.</code><code class="descname">get_appointments_by_patient</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_appointments_by_patient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_appointments_by_patient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get appointment by Patient ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_availability">
+<code class="descclassname">model.</code><code class="descname">get_availability</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get availability</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_availability_by_doctor">
+<code class="descclassname">model.</code><code class="descname">get_availability_by_doctor</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_availability_by_doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_availability_by_doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get availability by doctor ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_available_appointments">
+<code class="descclassname">model.</code><code class="descname">get_available_appointments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_available_appointments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_available_appointments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get All available appointments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_available_appointments_by_doctor">
+<code class="descclassname">model.</code><code class="descname">get_available_appointments_by_doctor</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_available_appointments_by_doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_available_appointments_by_doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get available appointments by doctor ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_clerk">
+<code class="descclassname">model.</code><code class="descname">get_clerk</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_clerk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_clerk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Clerk by ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_clerks">
+<code class="descclassname">model.</code><code class="descname">get_clerks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_clerks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_clerks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get All Clerks</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_doctor">
+<code class="descclassname">model.</code><code class="descname">get_doctor</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Doctor by ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_doctor_by_name">
+<code class="descclassname">model.</code><code class="descname">get_doctor_by_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_doctor_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_doctor_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Doctor by name</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_doctors">
+<code class="descclassname">model.</code><code class="descname">get_doctors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_doctors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_doctors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get All Doctors</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_patient">
+<code class="descclassname">model.</code><code class="descname">get_patient</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_patient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_patient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Patient by Id</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_patient_by_name">
+<code class="descclassname">model.</code><code class="descname">get_patient_by_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_patient_by_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_patient_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Patient by name</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_patient_medical_record">
+<code class="descclassname">model.</code><code class="descname">get_patient_medical_record</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_patient_medical_record"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_patient_medical_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get medical record by patient ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_patients">
+<code class="descclassname">model.</code><code class="descname">get_patients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_patients"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_patients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get All Patients</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.get_upcoming_appointments_by_doctor">
+<code class="descclassname">model.</code><code class="descname">get_upcoming_appointments_by_doctor</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#get_upcoming_appointments_by_doctor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.get_upcoming_appointments_by_doctor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get upcoming appointments by doctor ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.remove_appointment">
+<code class="descclassname">model.</code><code class="descname">remove_appointment</code><span class="sig-paren">(</span><em>appointment_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#remove_appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.remove_appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove Appointment by ID</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.remove_availability">
+<code class="descclassname">model.</code><code class="descname">remove_availability</code><span class="sig-paren">(</span><em>availability_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#remove_availability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.remove_availability" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove availability</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.remove_from_calendar">
+<code class="descclassname">model.</code><code class="descname">remove_from_calendar</code><span class="sig-paren">(</span><em>calendar_id</em>, <em>event_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#remove_from_calendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.remove_from_calendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove event from calendar</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="model.unbook_appointment">
+<code class="descclassname">model.</code><code class="descname">unbook_appointment</code><span class="sig-paren">(</span><em>appointment_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#unbook_appointment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#model.unbook_appointment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unbook appointment</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Smart Office Application</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CRUD Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doctor.html">Doctor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="patient.html">Patient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clerk.html">Clerk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="availability.html">Availability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appointment.html">Appointment</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Smart Office Application’s documentation!</a></li>
+      <li>Next: <a href="doctor.html" title="next chapter">Doctor</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Quang Minh Doan, Bramantha Patra, Pon StEe, Truong Giang Le.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/crud.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

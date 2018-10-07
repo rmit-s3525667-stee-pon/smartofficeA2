@@ -3,7 +3,7 @@
         <div class="col-md-3">
             <h2>{{ patient.name }}</h2>
             <h5>Email:<br> {{ patient.email }}</h5>
-            <h5>Dob:<br>{{ patient.birthday }} </h5>
+            <h5>Dob:<br>{{ patient.birthday[0:16] }} </h5>
             <h5>Phone:<br> {{ patient.phone }}</h5>
         </div>
         <br>

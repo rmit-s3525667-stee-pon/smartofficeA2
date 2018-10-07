@@ -1,0 +1,760 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>api_caller &#8212; Smart Office Application 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for api_caller</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contain functions that make request to API&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+
+
+<div class="viewcode-block" id="Patient"><a class="viewcode-back" href="../api.html#api_caller.Patient">[docs]</a><span class="k">class</span> <span class="nc">Patient</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Patient Class&quot;&quot;&quot;</span> 
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">phone</span><span class="p">,</span> <span class="n">birthday</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Patient Initializer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phone</span> <span class="o">=</span> <span class="n">phone</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthday</span> <span class="o">=</span> <span class="n">birthday</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span></div>
+
+<div class="viewcode-block" id="Doctor"><a class="viewcode-back" href="../api.html#api_caller.Doctor">[docs]</a><span class="k">class</span> <span class="nc">Doctor</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Doctor Class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">major</span><span class="p">,</span> <span class="n">calendar_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Doctor Initializer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">major</span> <span class="o">=</span> <span class="n">major</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">calendar_id</span> <span class="o">=</span> <span class="n">calendar_id</span></div>
+
+<div class="viewcode-block" id="Clerk"><a class="viewcode-back" href="../api.html#api_caller.Clerk">[docs]</a><span class="k">class</span> <span class="nc">Clerk</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Clerk Class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clerk Initializer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="n">email</span></div>
+    
+<div class="viewcode-block" id="Appointment"><a class="viewcode-back" href="../api.html#api_caller.Appointment">[docs]</a><span class="k">class</span> <span class="nc">Appointment</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Appointment Class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Appointment Initializer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doctor_id</span> <span class="o">=</span> <span class="n">doctor_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_start</span> <span class="o">=</span> <span class="n">time_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_end</span> <span class="o">=</span> <span class="n">time_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_id</span> <span class="o">=</span> <span class="n">patient_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_id</span> <span class="o">=</span> <span class="n">event_id</span></div>
+
+<div class="viewcode-block" id="Availability"><a class="viewcode-back" href="../api.html#api_caller.Availability">[docs]</a><span class="k">class</span> <span class="nc">Availability</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Availability Class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Availability Initializer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doctor_id</span> <span class="o">=</span> <span class="n">doctor_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_start</span> <span class="o">=</span> <span class="n">time_start</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_end</span> <span class="o">=</span> <span class="n">time_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_id</span> <span class="o">=</span> <span class="n">event_id</span></div>
+
+<div class="viewcode-block" id="MedicalRecord"><a class="viewcode-back" href="../api.html#api_caller.MedicalRecord">[docs]</a><span class="k">class</span> <span class="nc">MedicalRecord</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Medical Record Class&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">notes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Medical Record Initializer&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doctor_id</span> <span class="o">=</span> <span class="n">doctor_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patient_id</span> <span class="o">=</span> <span class="n">patient_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">date</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">notes</span> <span class="o">=</span> <span class="n">notes</span></div>
+
+<span class="n">URL</span> <span class="o">=</span> <span class="s1">&#39;http://10.132.80.171/&#39;</span>
+<span class="n">patient_code</span> <span class="o">=</span> <span class="s1">&#39;patient&#39;</span>
+<span class="n">doctor_code</span> <span class="o">=</span> <span class="s1">&#39;doctor&#39;</span>
+<span class="n">clerk_code</span> <span class="o">=</span> <span class="s1">&#39;clerk&#39;</span>
+<span class="n">appointment_code</span> <span class="o">=</span> <span class="s1">&#39;appointment&#39;</span>
+<span class="n">availability_code</span> <span class="o">=</span> <span class="s1">&#39;availability&#39;</span>
+<span class="n">calendar_code</span> <span class="o">=</span> <span class="s1">&#39;calendar&#39;</span>
+
+
+<span class="c1"># Patient API caller</span>
+<div class="viewcode-block" id="get_patient"><a class="viewcode-back" href="../api.html#api_caller.get_patient">[docs]</a><span class="k">def</span> <span class="nf">get_patient</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Patient by Id&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">patient_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">patient</span> <span class="o">=</span> <span class="n">Patient</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;phone&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Patient retrieve&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">patient</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1"># add patient to the system</span>
+<div class="viewcode-block" id="add_patient"><a class="viewcode-back" href="../api.html#api_caller.add_patient">[docs]</a><span class="k">def</span> <span class="nf">add_patient</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">phone</span><span class="p">,</span> <span class="n">birthday</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add Patient&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">patient_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;phone&quot;</span><span class="p">:</span> <span class="n">phone</span><span class="p">,</span>
+        <span class="s2">&quot;birthday&quot;</span><span class="p">:</span> <span class="n">birthday</span><span class="p">,</span>
+        <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> 
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Patient added to the system&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to add patient, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<span class="c1"># get all the patients</span>
+<div class="viewcode-block" id="get_patients"><a class="viewcode-back" href="../api.html#api_caller.get_patients">[docs]</a><span class="k">def</span> <span class="nf">get_patients</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get All Patients&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">patient_code</span>
+    <span class="n">patients</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">patient_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">patient</span> <span class="o">=</span> <span class="n">Patient</span><span class="p">(</span><span class="n">patient_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">patient_json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">patient_json</span><span class="p">[</span><span class="s1">&#39;phone&#39;</span><span class="p">],</span> <span class="n">patient_json</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">],</span> <span class="n">patient_json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+            <span class="n">patients</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">patient</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Patients retrieved&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">patients</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get patients, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1"># Doctor API caller</span>
+    <span class="c1"># get all the doctor</span>
+<div class="viewcode-block" id="get_doctors"><a class="viewcode-back" href="../api.html#api_caller.get_doctors">[docs]</a><span class="k">def</span> <span class="nf">get_doctors</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get All Doctors&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">doctor_code</span>
+    <span class="n">doctors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doctor_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="p">(</span><span class="n">doctor_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">doctor_json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">doctor_json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="n">doctor_json</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">],</span> <span class="n">doctor_json</span><span class="p">[</span><span class="s1">&#39;calendar_id&#39;</span><span class="p">])</span>
+            <span class="n">doctors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doctor</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">doctors</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Doctors Retrieved&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get doctors, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># add doctor to the system</span>
+<div class="viewcode-block" id="add_doctor"><a class="viewcode-back" href="../api.html#api_caller.add_doctor">[docs]</a><span class="k">def</span> <span class="nf">add_doctor</span><span class="p">(</span> <span class="n">name</span><span class="p">,</span> <span class="n">major</span><span class="p">,</span> <span class="n">email</span><span class="p">,</span> <span class="n">calendar_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add Doctor&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">doctor_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;major&quot;</span><span class="p">:</span><span class="n">major</span><span class="p">,</span>
+        <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+        <span class="s2">&quot;calendar_id&quot;</span><span class="p">:</span><span class="kc">None</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> 
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Doctor added to the system&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to add doctor, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="get_doctor"><a class="viewcode-back" href="../api.html#api_caller.get_doctor">[docs]</a><span class="k">def</span> <span class="nf">get_doctor</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Doctor by ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">doctor_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">doctors</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;calendar_id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">doctor</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Doctor retrieve&quot;</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1"># get all the clerks</span>
+<div class="viewcode-block" id="get_clerks"><a class="viewcode-back" href="../api.html#api_caller.get_clerks">[docs]</a><span class="k">def</span> <span class="nf">get_clerks</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get All Clerks&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">clerk_code</span>
+    <span class="n">clerks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">clerk_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">clerk</span> <span class="o">=</span> <span class="n">Clerk</span><span class="p">(</span><span class="n">clerk_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">clerk_json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">clerk_json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+            <span class="n">clerks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clerk</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clerks retrieved&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clerks</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get clerks, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1"># add clerk to the system</span>
+<div class="viewcode-block" id="add_clerk"><a class="viewcode-back" href="../api.html#api_caller.add_clerk">[docs]</a><span class="k">def</span> <span class="nf">add_clerk</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">email</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add Clerk&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">clerk_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span>
+        <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">email</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> 
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clerk added to the system&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to add clerk, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="get_clerk"><a class="viewcode-back" href="../api.html#api_caller.get_clerk">[docs]</a><span class="k">def</span> <span class="nf">get_clerk</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Clerk by ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">clerk_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">clerk</span> <span class="o">=</span> <span class="n">Clerk</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Clerk retrieve&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clerk</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1"># Appointment API Caller</span>
+<span class="c1"># add a appointment</span>
+<div class="viewcode-block" id="add_appointment"><a class="viewcode-back" href="../api.html#api_caller.add_appointment">[docs]</a><span class="k">def</span> <span class="nf">add_appointment</span><span class="p">(</span><span class="n">doctor_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add Appointment&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doctor_id&quot;</span><span class="p">:</span> <span class="n">doctor_id</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+        <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="n">time_start</span><span class="p">,</span>
+        <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="n">time_end</span><span class="p">,</span>
+        <span class="s2">&quot;patient_id&quot;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
+        <span class="s2">&quot;event_id&quot;</span><span class="p">:</span> <span class="n">event_id</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Appointment have been added&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to add Appointment, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1"># Get All Appointments</span>
+<div class="viewcode-block" id="get_appointments"><a class="viewcode-back" href="../api.html#api_caller.get_appointments">[docs]</a><span class="k">def</span> <span class="nf">get_appointments</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get All Appointments&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="c1"># Get Appointment by Id        </span>
+<div class="viewcode-block" id="get_appointment"><a class="viewcode-back" href="../api.html#api_caller.get_appointment">[docs]</a><span class="k">def</span> <span class="nf">get_appointment</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Appointment by ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+            <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+            <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+            <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointment&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointment</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointment, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="remove_appointment"><a class="viewcode-back" href="../api.html#api_caller.remove_appointment">[docs]</a><span class="k">def</span> <span class="nf">remove_appointment</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove Appointment by ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cannot delete appointment, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="get_available_appointments"><a class="viewcode-back" href="../api.html#api_caller.get_available_appointments">[docs]</a><span class="k">def</span> <span class="nf">get_available_appointments</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get All available appointments&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/available&quot;</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_available_appointments_by_doctor"><a class="viewcode-back" href="../api.html#api_caller.get_available_appointments_by_doctor">[docs]</a><span class="k">def</span> <span class="nf">get_available_appointments_by_doctor</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get available appointments by doctor ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/available/doctor/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="k">def</span> <span class="nf">get_available_appointments_by_patient</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/available/patient/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="get_appointments_by_patient"><a class="viewcode-back" href="../api.html#api_caller.get_appointments_by_patient">[docs]</a><span class="k">def</span> <span class="nf">get_appointments_by_patient</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get appointment by Patient ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/patient/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_appointments_by_doctor"><a class="viewcode-back" href="../api.html#api_caller.get_appointments_by_doctor">[docs]</a><span class="k">def</span> <span class="nf">get_appointments_by_doctor</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get appointments by doctor ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/doctor/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_appointments_by_doctor_and_date"><a class="viewcode-back" href="../api.html#api_caller.get_appointments_by_doctor_and_date">[docs]</a><span class="k">def</span> <span class="nf">get_appointments_by_doctor_and_date</span><span class="p">(</span><span class="n">doctor_id</span><span class="p">,</span> <span class="n">input_date</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get available appointments by doctor ID and Date&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/doctor/bydate&quot;</span> 
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doctor_id&quot;</span><span class="p">:</span> <span class="n">doctor_id</span><span class="p">,</span>
+        <span class="s2">&quot;input_date&quot;</span><span class="p">:</span> <span class="n">input_date</span>
+    <span class="p">}</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>        </div>
+
+<div class="viewcode-block" id="get_upcoming_appointments_by_doctor"><a class="viewcode-back" href="../api.html#api_caller.get_upcoming_appointments_by_doctor">[docs]</a><span class="k">def</span> <span class="nf">get_upcoming_appointments_by_doctor</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get upcoming appointments by doctor ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/doctor/next/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">appointments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">appointment_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">appointment</span> <span class="o">=</span> <span class="n">Appointment</span><span class="p">(</span><span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span> 
+                <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">appointment_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">appointments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">appointment</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Appointments&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">appointments</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to get Appointments, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="book_appointment"><a class="viewcode-back" href="../api.html#api_caller.book_appointment">[docs]</a><span class="k">def</span> <span class="nf">book_appointment</span><span class="p">(</span><span class="n">appointment_id</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Book appointment&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/book&quot;</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;appointment_id&quot;</span><span class="p">:</span> <span class="n">appointment_id</span><span class="p">,</span>
+        <span class="s2">&quot;patient_id&quot;</span><span class="p">:</span> <span class="n">patient_id</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Appointment Booked&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to Book the appointment, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="unbook_appointment"><a class="viewcode-back" href="../api.html#api_caller.unbook_appointment">[docs]</a><span class="k">def</span> <span class="nf">unbook_appointment</span><span class="p">(</span><span class="n">appointment_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unbook appointment&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">appointment_code</span> <span class="o">+</span> <span class="s2">&quot;/unbook&quot;</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;appointment_id&quot;</span><span class="p">:</span> <span class="n">appointment_id</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Appointment Unbooked&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to Unbook the appointment, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<span class="c1"># Availability API Caller</span>
+<div class="viewcode-block" id="add_availability"><a class="viewcode-back" href="../api.html#api_caller.add_availability">[docs]</a><span class="k">def</span> <span class="nf">add_availability</span><span class="p">(</span><span class="n">doctor_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add availability&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">availability_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doctor_id&quot;</span><span class="p">:</span> <span class="n">doctor_id</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+        <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="n">time_start</span><span class="p">,</span>
+        <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="n">time_end</span><span class="p">,</span>
+        <span class="s2">&quot;event_id&quot;</span><span class="p">:</span> <span class="n">event_id</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Availability Added to the system&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to add Availability to the system, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="get_availability"><a class="viewcode-back" href="../api.html#api_caller.get_availability">[docs]</a><span class="k">def</span> <span class="nf">get_availability</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get availability&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">availability_code</span>
+    <span class="n">availabilities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">avail_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">availability</span> <span class="o">=</span> <span class="n">Availability</span><span class="p">(</span><span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span>
+                <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span>
+                <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">availabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">availability</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Availabilities&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">availabilities</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve availabilities, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_availability_by_doctor"><a class="viewcode-back" href="../api.html#api_caller.get_availability_by_doctor">[docs]</a><span class="k">def</span> <span class="nf">get_availability_by_doctor</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get availability by doctor ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">availability_code</span> <span class="o">+</span> <span class="s2">&quot;/doctor/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="n">availabilities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">avail_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">availability</span> <span class="o">=</span> <span class="n">Availability</span><span class="p">(</span><span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span>
+                <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;time_start&#39;</span><span class="p">],</span> <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;time_end&#39;</span><span class="p">],</span>
+                <span class="n">avail_json</span><span class="p">[</span><span class="s1">&#39;event_id&#39;</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">availabilities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">availability</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Retrieve Availabilities&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">availabilities</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to retrieve availabilities, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="remove_availability"><a class="viewcode-back" href="../api.html#api_caller.remove_availability">[docs]</a><span class="k">def</span> <span class="nf">remove_availability</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove availability by ID&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">availability_code</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remove Availability&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to remove availability, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<span class="c1"># Calendar API Caller</span>
+
+<div class="viewcode-block" id="remove_from_calendar"><a class="viewcode-back" href="../api.html#api_caller.remove_from_calendar">[docs]</a><span class="k">def</span> <span class="nf">remove_from_calendar</span><span class="p">(</span><span class="n">calendar_id</span><span class="p">,</span> <span class="n">event_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Remove event from calendar&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">calendar_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;calendar_id&quot;</span><span class="p">:</span> <span class="n">calendar_id</span><span class="p">,</span>
+        <span class="s2">&quot;event_id&quot;</span><span class="p">:</span> <span class="n">event_id</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Remove Event&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to remove event, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="add_to_calendar"><a class="viewcode-back" href="../api.html#api_caller.add_to_calendar">[docs]</a><span class="k">def</span> <span class="nf">add_to_calendar</span><span class="p">(</span><span class="n">summary</span><span class="p">,</span> <span class="n">doctor_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">time_start</span><span class="p">,</span> <span class="n">time_end</span><span class="p">,</span> <span class="n">calendar_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add event from calendar&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">calendar_code</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;summary&quot;</span><span class="p">:</span> <span class="n">summary</span><span class="p">,</span>
+        <span class="s2">&quot;doctor_id&quot;</span><span class="p">:</span> <span class="n">doctor_id</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+        <span class="s2">&quot;time_start&quot;</span><span class="p">:</span> <span class="n">time_start</span><span class="p">,</span>
+        <span class="s2">&quot;time_end&quot;</span><span class="p">:</span> <span class="n">time_end</span><span class="p">,</span>
+        <span class="s2">&quot;calendar_id&quot;</span><span class="p">:</span> <span class="n">calendar_id</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="n">event_id</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">event_id</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Unable to add event into the Calendar, Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="get_patient_medical_record"><a class="viewcode-back" href="../api.html#api_caller.get_patient_medical_record">[docs]</a><span class="k">def</span> <span class="nf">get_patient_medical_record</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Patient medical records&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">patient_code</span> <span class="o">+</span><span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/medical_record&quot;</span>
+    <span class="c1"># url = URL + patient_code + &quot;/medical_record&quot; + str(id)</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">record_json</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">MedicalRecord</span><span class="p">(</span><span class="n">record_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">record_json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">],</span> 
+                <span class="n">record_json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">],</span> <span class="n">record_json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">record_json</span><span class="p">[</span><span class="s1">&#39;notes&#39;</span><span class="p">])</span>
+            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">records</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="add_medical_record"><a class="viewcode-back" href="../api.html#api_caller.add_medical_record">[docs]</a><span class="k">def</span> <span class="nf">add_medical_record</span><span class="p">(</span><span class="n">doctor_id</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">notes</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add medical record for a patient&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">patient_code</span> <span class="o">+</span> <span class="s2">&quot;/medical_record&quot;</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">data_send</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doctor_id&quot;</span><span class="p">:</span> <span class="n">doctor_id</span><span class="p">,</span>
+        <span class="s2">&quot;patient_id&quot;</span><span class="p">:</span> <span class="n">patient_id</span><span class="p">,</span>
+        <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+        <span class="s2">&quot;notes&quot;</span><span class="p">:</span><span class="n">notes</span>
+    <span class="p">}</span>
+    <span class="k">try</span><span class="p">:</span> 
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data_send</span><span class="p">),</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">:</span><span class="s1">&#39;application/json&#39;</span><span class="p">}</span>
+            <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record Added&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error Occur&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="get_patient_by_name"><a class="viewcode-back" href="../api.html#api_caller.get_patient_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_patient_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Patient by name&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">patient_code</span> <span class="o">+</span> <span class="s2">&quot;/name/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">patient</span> <span class="o">=</span> <span class="n">Patient</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;phone&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">patient</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_doctor_by_name"><a class="viewcode-back" href="../api.html#api_caller.get_doctor_by_name">[docs]</a><span class="k">def</span> <span class="nf">get_doctor_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get Doctor by name&quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span> <span class="o">+</span> <span class="n">doctor_code</span> <span class="o">+</span> <span class="s2">&quot;/name/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">doctor</span> <span class="o">=</span> <span class="n">Doctor</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;major&#39;</span><span class="p">],</span> <span class="n">json_data</span><span class="p">[</span><span class="s1">&#39;calendar_id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">doctor</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Smart Office Application</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API caller</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../doctor.html">Doctor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../patient.html">Patient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../clerk.html">Clerk</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Quang Minh Doan, Bramantha Patra, Pon StEe, Truong Giang Le.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

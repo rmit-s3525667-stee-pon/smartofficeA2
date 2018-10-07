@@ -1,8 +1,24 @@
 <div class="container">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-10 col-md-offset-1">
+        <h3>Doctor</h3>
         <br>
-        
-    </div>
+    <table class="table table-condensed">
+        <thead>
+            <form method="POST" action='{{url_for('clerk.clerkdashboard')}}'>
+                <select name="doctor_name" onchange="if(this.value != 0) { this.form.submit(); }">
+                        <option value="0"> Select a Doctor </option>
+                    {% for doctor in doctors %}
+                        <option value="{{doctor.id}}">{{ doctor.name }}</option>
+                    {% endfor %}
+                </select>
+                <input class="hidden" value="None" name="appointment_id">
+                <input class="hidden" value="None" name="patient_name">
+            </form>
+        </thead>
+    </table>
+</div>
+<hr>
+</div>
 <div class="container">
     <div class="row"><br><br>
         <div class="col-md-10 col-md-offset-1">
@@ -27,8 +43,7 @@
 
                     <tbody>
                     <tr>
-                        <th rowspan="100"> {{days[loop.index0]}} <br> {{date}} </th>
-                        <!-- <th rowspan="4"> {{date}} </th> -->
+                        <th rowspan="200"> {{days[loop.index0]}} <br> {{date}} </th>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -58,8 +73,8 @@
                                         {% for patient in patients %}
                                         <option value="{{patient.id}}">{{ patient.name }}</option>
                                         {% endfor %}
-                                        <input type="hidden" value="{{appointment.id}}" name="appointment_id">
-                                  
+                                        <input type="hidden" value="{{appointment.id}}" name="appointment_id"> 
+                                        <input class="hidden" value='None' name="doctor_name">
                                 </select></td> 
                             </form>
                         {% else %}

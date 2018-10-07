@@ -38,9 +38,7 @@
 
                     <tbody>
                     <tr>
-
-                        <th rowspan="10"> {{days[loop.index0]}} <br> {{date}} </th>
-                        <!-- <th rowspan="4"> {{date}} </th> -->
+                        <th rowspan="200"> {{days[loop.index0]}} <br> {{date}} </th>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -83,14 +81,13 @@
                       
                           		{% if appointment.patient_id != None %}
                                 <td>
-                                        <form method="POST" action='{{url_for('doctor.upcoming_appointments')}}'>
-                                                <input class="hidden" value='{{ appointment.patient_id }}' name="patient_id">
-                                                <td><button type="submit" class="btn btn-info">Get Medical Record</button></td>
-                                            </form>
+                                    <form action='{{url_for('doctor.patient_record', id = appointment.patient_id )}}'>
+                                        <td><button type="submit" class="btn btn-info">Get Medical Record</button></td>
+                                    </form>
                                 </td>
                                  {% else %}
                                  <td>
-                                                <td><button type="submit" class="btn btn-default">Available</button></td>
+                                        <td><button type="submit" class="btn btn-default">Available</button></td>
                                  </td>
                                 {% endif %}
 

@@ -5,18 +5,16 @@ import time
 import sys
 import json
 
-# Minh's pi
-# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
-# Bram and April's pi
+# Path to model
 sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
 
 mod = Blueprint('calendar',__name__, template_folder='templates')
 
 from smartoffice import model
 
-
 @mod.route('', methods=['DELETE'])
 def remove_from_calendar():
+    """Remove event from calendar API"""
     calendar_id = request.json["calendar_id"]
     event_id = request.json["event_id"]
     model.remove_from_calendar(calendar_id, event_id)
@@ -24,6 +22,7 @@ def remove_from_calendar():
 
 @mod.route('', methods=['POST'])
 def add_to_calendar():
+    """Add event to calendar API"""
     summary = request.json['summary']
     doctor_id = request.json['doctor_id']
     date = request.json['date']

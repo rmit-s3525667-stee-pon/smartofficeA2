@@ -1,3 +1,4 @@
+"""This module will contain the API web application that communicate dirrectly to the database"""
 from smartoffice import app
 from smartoffice import db
 app.secret_key = 'super secret key'

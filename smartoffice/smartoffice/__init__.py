@@ -6,12 +6,10 @@ from datetime import datetime, date
 from flask_bootstrap import Bootstrap
 
 import sys
+
 # Pi's directory
 sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
-# Bram's directory
-# sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
-# April's directory 
-# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice')
+
 import os
 app = Flask(__name__)
 
@@ -27,7 +25,6 @@ app.register_blueprint(doctor.app.mod, url_prefix = "/doctor")
 app.register_blueprint(patient.app.mod, url_prefix = "/patient")
 app.register_blueprint(clerk.app.mod, url_prefix = "/clerk")
 
-
 bootstrap = Bootstrap(app)
 
 login_html = "login.html"
@@ -38,21 +35,25 @@ profile_html = "profile.html"
 
 
 class ReusableForm(Form):
+    """Patient Form Validation"""
     name = TextField('Name:', validators=[validators.required(), validators.Length(min=4)])
     phone = TextField('Phone:', validators=[validators.required(), validators.Length(min=10, max=10)])
     birthday  = DateTimeField('Birthday:', format='%Y-%m-%d', validators=[DateRange(min=datetime(1910, 1, 1),max=datetime(2018, 10, 10)), validators.required()])
     email = TextField('Email:', validators=[validators.required(), Email()])
 
 class ReusableFormDoctor(Form):
+    """Doctor Form Validation"""
     name = TextField('Name:', validators=[validators.required(), validators.Length(min=4)])
     email = TextField('Email address', [validators.required(), Email()])
     major = TextField('Major:', validators=[validators.required()])
 
 class ReusableFormClerk(Form):
+    """Clerk Form Validation"""
     name = TextField('Name:', validators=[validators.required(), validators.Length(min=4)])
     email = TextField('Email address', [validators.required(), Email()])
 
 def loginState():
+    """Check the current login status"""
     if 'type' in session:
         if session['type'] == "Doctor":
             return url_for('doctor.availabilities')
@@ -66,6 +67,7 @@ def loginState():
 @app.route("/", methods=['GET'])
 @app.route("/login")
 def login():
+    """Login page"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -82,6 +84,7 @@ def login():
 
 @app.route("/login", methods=['POST'])
 def loginAction():
+    """Login method"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -102,6 +105,7 @@ def loginAction():
 
 @app.route("/register_patient")
 def registerPatient():
+    """Patient register page"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -110,6 +114,7 @@ def registerPatient():
 
 @app.route("/register_patient", methods=['POST'])
 def registerPatientAction():
+    """Patient register method"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -129,17 +134,10 @@ def registerPatientAction():
         flash('Error: Please try again ')
         return redirect('register_patient')
         
- 
-    # redirect_link = loginState()
-    # if redirect_link != None:
-    #     return redirect(redirect_link)
-    # patient_name = request.form['name']
-    # patient_email = request.form['email']           
-    # model.add_patient(patient_name,patient_email)
-    # return redirect(url_for('login'))
 
 @app.route("/register_doctor")
 def registerDoctor():
+    """Doctor register page"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -148,6 +146,7 @@ def registerDoctor():
 
 @app.route("/register_doctor", methods=['POST'])
 def registerDoctorAction():
+    """Doctor register method"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -170,6 +169,7 @@ def registerDoctorAction():
  
 @app.route("/register_clerk")
 def registerClerk():
+    """Clerk register page"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -178,6 +178,7 @@ def registerClerk():
 
 @app.route("/register_clerk", methods=['POST'])
 def registerClerkAction():
+    """Clerk register method"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -195,26 +196,10 @@ def registerClerkAction():
     else:
         flash('Error: Please try again ')
         return redirect('register_clerk')
-       
-    # doctor_name = request.form['name']
-    # doctor_email = request.form['email']
-    # doctor_major = request.form['major']
-    # model.add_doctor(doctor_name,doctor_major, doctor_email)
-    # return redirect(url_for('login'))
-
-@app.route("/patient_record", methods=['POST'])
-def patientRecord():
-    patient_id = request.form['patient_id']    
-    patient = api_caller.get_patient(patient_id)
-    data_output = {
-            'patient':patient,
-            'content':profile_html
-            }
-
-    return render_template("patient.html", **data_output)
 
 @app.route('/logout')
 def logout():
+    """Logout method"""
     session.pop('id',None)
     session.pop('type',None)
     return redirect(url_for('login'))

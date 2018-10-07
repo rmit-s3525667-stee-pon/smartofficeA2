@@ -166,20 +166,6 @@ def main():
 			cv2.putText(frame, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
 				0.75, (0, 255, 0), 2)
 
-			# gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-			# roi_gray = gray[right:right+left, top:top+bottom]
-			# roi_color = frame[right:right+left, top:top+bottom]
-			# eyes = eye_detector.detectMultiScale(roi_gray,1.5,5)
-
-			# for(ex, ey, ew, eh) in eyes:
-			# 	ex = int(ex * r)
-			# 	ey = int(ey * r)
-			# 	ew = int(ew * r)
-			# 	eh = int(eh * r)
-
-			# 	# draw the predicted face name on the image
-			# 	cv2.rectangle(frame, (eh, ex), (ey, ew),(0, 255, 0), 2)
-
 		# if the video writer is None *AND* we are supposed to write
 		# the output video to disk initialize the writer
 		if writer is None and args["output"] is not None:
@@ -216,7 +202,7 @@ def main():
 
 				now = datetime.datetime.now()
 				n1h = now + datetime.timedelta(hours=1)
-				n1w = now + datetime.timedelta(days=8)
+				n1w = now + datetime.timedelta(days=7)
 				now_date = now.strftime("%Y-%m-%d")
 				next_one_week = datetime.datetime.strftime(n1w, '%Y-%m-%d')
 				next_one_hour = datetime.datetime.strftime(n1h, '%H:%M:%S')
@@ -232,11 +218,12 @@ def main():
 							# print("Patient exists in database")
 							if appointment['patient_id'] == patient['id']:
 								# print("You have an appointment")
-								if appointment['date'] == next_one_week:
+								# if appointment['date'] == next_one_week:
+								if appointment['date'] == now_date:
 									# print("You have an appointment today next week")
 									# st = datetime.datetime.strptime(appointment['time_start'], "%H:%M:%S")
-									if next_one_hour < appointment['time_start']: 
-									# if appointment['time_start'] < next_one_hour: 
+									# if next_one_hour < appointment['time_start']: 
+									if appointment['time_start'] < next_one_hour: 
 										print("You have an appointment in the next one hour")
 										send_notification_via_pushbullet("Patient {} has arrived!".format(name), \
 											"Here's a link to the patient's medical record: {}/doctor/medical_record/{}".format(host, patient['id']))

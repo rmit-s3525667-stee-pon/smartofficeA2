@@ -15,6 +15,7 @@ from smartoffice import model
 # Add a Doctor to the system
 @mod.route('',methods=['POST'])
 def add_doctor():
+    """Add doctor API"""
     name = request.json['name']
     email = request.json['email']
     major = request.json['major']
@@ -25,16 +26,19 @@ def add_doctor():
 # Get All Doctor
 @mod.route('',methods=['GET'])
 def get_doctors():
+    """Get all doctors API"""
     doctors = model.get_doctors()
     return model.doctors_schema.jsonify(doctors)
 
 # Get Doctor by Id
 @mod.route('/<id>', methods=['GET'])
 def get_doctor(id):
+    """Get doctor by ID API"""
     doctor = model.get_doctor(id)
     return model.doctor_schema.jsonify(doctor)
 
 @mod.route('/name/<name>', methods=['GET'])
 def get_doctor_by_name(name):
+    """Get doctor by name API"""
     doctor = model.get_doctor_by_name(name)
     return model.doctor_schema.jsonify(doctor)

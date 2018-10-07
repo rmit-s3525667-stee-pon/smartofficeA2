@@ -4,9 +4,7 @@ from flask import Flask, render_template, session, url_for, redirect, request
 import time
 import sys
 
-# Minh's pi
-# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
-# Bram and April's pi
+#Path to model
 sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
 
 mod = Blueprint('availability',__name__, template_folder='templates')
@@ -14,10 +12,12 @@ mod = Blueprint('availability',__name__, template_folder='templates')
 from smartoffice import model
 
 def date_handler(obj):
+    """Date handler to return in json format"""
     return obj.isoformat() if hasattr(obj, 'isoformat') else obj
 
 @mod.route('', methods=['POST'])
 def add_availability():
+    """Add Avalability API"""
     doctor_id = request.json['doctor_id']
     date = request.json['date']
     time_start = request.json['time_start']
@@ -28,15 +28,18 @@ def add_availability():
 
 @mod.route('', methods=['GET'])
 def get_availability():
+    """Get Avalability API"""
     availabilities = model.get_availability()
     return model.availabilities_schema.dumps(availabilities, default = date_handler )
 
 @mod.route('/doctor/<id>', methods=['GET'])
 def get_availability_by_doctor(id):
+    """Get Avalability by doctor ID API"""
     availabilities = model.get_availability_by_doctor(id)
     return model.availabilities_schema.dumps(availabilities, default = date_handler )
 
 @mod.route('/<id>', methods=['DELETE'])
 def remove_availability(id):
+    """Remove Availability API"""
     model.remove_availability(id)
     return "Deleted"
