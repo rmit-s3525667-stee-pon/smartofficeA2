@@ -1,12 +1,11 @@
+"""This module contain the route for all tabs in Patient page"""
+
 from flask import Blueprint
 from flask import Flask,session, render_template, url_for, redirect, request
-import sys
+import sys, datetime
+
 # Pi's directory
-# sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
-# Bram's directory
-sys.path.insert(0,'/Users/BramanthaPatra/A2Git/smartofficeA2/smartoffice/smartoffice')
-# April's directory 
-# sys.path.insert(0,'/Users/User/Downloads/smartoffice/smartofficeA2/smartoffice/smartoffice')
+sys.path.insert(0,'/home/pi/A2/smartoffice/smartoffice/')
 
 mod = Blueprint('patient',__name__,  template_folder='templates')
 
@@ -18,6 +17,8 @@ profile_html = "profile.html"
 
 
 def loginState():
+    """Check the current login status"""
+    #Only the Patient allow to access this page
     if 'type' in session:
         if session['type'] != "Patient":
             return url_for('login')
@@ -28,6 +29,7 @@ def loginState():
 
 @mod.route('/appointments')
 def appointments():
+    """Show up coming appointments"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -45,6 +47,7 @@ def appointments():
 
 @mod.route('/make_appointment', methods=['GET', 'POST'])
 def make_appointment():
+    """Show available appointments and book appointments"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -52,11 +55,26 @@ def make_appointment():
     if request.method == 'GET':
         appointments = api_caller.get_available_appointments()
     elif request.method == 'POST':
+        # When user book the appointment
         doctor_id = request.form['doctor_name']
         appointments = api_caller.get_available_appointments_by_doctor(doctor_id)
 
+    index = 0
+    today = datetime.datetime.today()
+    today_str = today.isoweekday()
+    distance_to_sunday = 7 - today.isoweekday()
+    dates = [0] * (distance_to_sunday + 7)
+    days = [0] * (distance_to_sunday + 7)
+
+    for index in range(0, 7 + distance_to_sunday):
+        curr_date = today + datetime.timedelta(days=index + 7)
+        dates.insert(index, datetime.datetime.strftime(curr_date, "%Y-%m-%d"))
+        days.insert(index, datetime.datetime.strftime(curr_date, "%A"))
+
     doctors = api_caller.get_doctors()
     data_output = {
+        'dates' : dates,
+        'days': days,
         'doctors':doctors,
         'appointments':appointments,
         'content':make_appointment_html
@@ -66,6 +84,7 @@ def make_appointment():
 
 @mod.route('/book_appointment', methods=['POST'])
 def book_appointment():
+    """Book appointment"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -78,6 +97,7 @@ def book_appointment():
 
 @mod.route('/unbook_appointment', methods=['POST'])
 def unbook_appointment():
+    """Unbook appointment"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
@@ -90,11 +110,16 @@ def unbook_appointment():
 
 @mod.route('/profile')
 def profile():
+    """Patient Profile"""
     redirect_link = loginState()
     if redirect_link != None:
         return redirect(redirect_link)
     patient = api_caller.get_patient(session['id'])
+    records = api_caller.get_patient_medical_record(session['id'])
+    doctors = api_caller.get_doctors()
     data_output = {
+            'doctors':doctors,
+            'records':records,
             'patient':patient,
             'content':profile_html
             }

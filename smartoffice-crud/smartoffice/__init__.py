@@ -5,9 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import sys
 
-# Minh's pi
-# sys.path.insert(0,'/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice')
-# Bram and April's pi
+#Path to model
 sys.path.insert(0,'/home/pi/A2/smartoffice-crud/smartoffice')
 
 import os
@@ -34,6 +32,7 @@ from smartoffice.appointment.app import mod
 from smartoffice.availability.app import mod
 from smartoffice.calendar.app import mod
 
+# import all the blueprint app 
 app.register_blueprint(doctor.app.mod, url_prefix = "/doctor")
 app.register_blueprint(patient.app.mod, url_prefix = "/patient")
 app.register_blueprint(clerk.app.mod, url_prefix = "/clerk")

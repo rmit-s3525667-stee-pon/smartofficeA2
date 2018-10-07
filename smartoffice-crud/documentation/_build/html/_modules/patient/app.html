@@ -1,0 +1,168 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>patient.app &#8212; Smart Office Application 1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for patient.app</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Blueprint</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="k">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="c1"># Minh&#39;s pi</span>
+<span class="c1"># sys.path.insert(0,&#39;/home/pi/playground/smartofficeA2/smartoffice-crud/smartoffice&#39;)</span>
+<span class="c1"># Bram and April&#39;s pi</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;/home/pi/A2/smartoffice-crud/smartoffice&#39;</span><span class="p">)</span>
+
+<span class="n">mod</span> <span class="o">=</span> <span class="n">Blueprint</span><span class="p">(</span><span class="s1">&#39;patient&#39;</span><span class="p">,</span><span class="vm">__name__</span><span class="p">,</span>  <span class="n">template_folder</span><span class="o">=</span><span class="s1">&#39;templates&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">smartoffice</span> <span class="k">import</span> <span class="n">model</span>
+
+
+<span class="k">def</span> <span class="nf">date_handler</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s1">&#39;isoformat&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="n">obj</span>
+
+<span class="c1"># Add a Patient to the system</span>
+<div class="viewcode-block" id="add_patient"><a class="viewcode-back" href="../../patient.html#patient.app.add_patient">[docs]</a><span class="nd">@mod</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_patient</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Add Patient API&quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+    <span class="n">email</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;phone&#39;</span><span class="p">]</span>
+    <span class="n">birthday</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;birthday&#39;</span><span class="p">]</span>
+    <span class="n">new_patient</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">add_patient</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">phone</span><span class="p">,</span> <span class="n">birthday</span><span class="p">,</span> <span class="n">email</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">patient_schema</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">new_patient</span><span class="p">)</span></div>
+
+<span class="c1"># Get a Patient </span>
+<div class="viewcode-block" id="get_patient"><a class="viewcode-back" href="../../patient.html#patient.app.get_patient">[docs]</a><span class="nd">@mod</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&lt;id&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_patient</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get patient by ID API&quot;&quot;&quot;</span>
+    <span class="n">patient</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_patient</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">patient_schema</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">patient</span><span class="p">)</span></div>
+
+<span class="c1"># Get all Patient</span>
+<div class="viewcode-block" id="get_patients"><a class="viewcode-back" href="../../patient.html#patient.app.get_patients">[docs]</a><span class="nd">@mod</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_patients</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Get all patients API&quot;&quot;&quot;</span>
+    <span class="n">patients</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_patients</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">patients_schema</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">patients</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_patient_medical_record"><a class="viewcode-back" href="../../patient.html#patient.app.get_patient_medical_record">[docs]</a><span class="nd">@mod</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&lt;id&gt;/medical_record&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_patient_medical_record</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get all patient&#39;s medical record by patient ID API&quot;&quot;&quot;</span>
+    <span class="n">records</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_patient_medical_record</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">medical_records_schema</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">default</span> <span class="o">=</span> <span class="n">date_handler</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="add_medical_record"><a class="viewcode-back" href="../../patient.html#patient.app.add_medical_record">[docs]</a><span class="nd">@mod</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/medical_record&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">add_medical_record</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Add patient&#39;s medical record API&quot;&quot;&quot;</span>
+    <span class="n">doctor_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;doctor_id&#39;</span><span class="p">]</span>
+    <span class="n">patient_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;patient_id&#39;</span><span class="p">]</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;notes&#39;</span><span class="p">]</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">add_medical_record</span><span class="p">(</span><span class="n">doctor_id</span><span class="p">,</span> <span class="n">patient_id</span><span class="p">,</span> <span class="n">date</span><span class="p">,</span> <span class="n">notes</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">medical_record_schema</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_patient_by_name"><a class="viewcode-back" href="../../patient.html#patient.app.get_patient_by_name">[docs]</a><span class="nd">@mod</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/name/&lt;name&gt;&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">get_patient_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get patient by name&quot;&quot;&quot;</span>
+    <span class="n">patient</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_patient_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">patient_schema</span><span class="o">.</span><span class="n">jsonify</span><span class="p">(</span><span class="n">patient</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Smart Office Application</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../crud.html">CRUD Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../doctor.html">Doctor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../patient.html">Patient</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../clerk.html">Clerk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../database.html">Database</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../calendar.html">Calendar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../availability.html">Availability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appointment.html">Appointment</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Quang Minh Doan, Bramantha Patra, Pon StEe, Truong Giang Le.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

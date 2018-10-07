@@ -7,13 +7,13 @@
     <div class="row"><br><br>
         <div class="col-md-10 col-md-offset-1">
             <div class="well-block">
-                <h3 class="text-center">Doctor's Availabilities</h3>
+                <h3 class="text-center">Doctor's Appointments</h3>
                 <table class="table table-condensed">
                     <thead>
                         <tr>
+                            <th>Date</th>
                             <th>Doctor</th>
                             <th>Patient</th>
-                            <th>Date</th>
                             <th>Start Time</th>
                             <th>End Time</th>
                             <th></th>
@@ -22,12 +22,27 @@
                             <th></th>
                         </tr>
                     </thead>
+                    {% for date in dates %} 
+                    {% if date != 0 %}
+
                     <tbody>
-                            <tr>
+                    <tr>
+                        <th rowspan="100"> {{days[loop.index0]}} <br> {{date}} </th>
+                        <!-- <th rowspan="4"> {{date}} </th> -->
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        </tr>
+
+                            
                         
                         {% for appointment in appointments %}
+                        {% if appointment.date == date %}
                         
-                        
+                        <tr>
 
                         {% for doctor in doctors %}
                         {% if appointment.doctor_id == doctor.id %}
@@ -57,28 +72,29 @@
                             {% endfor %}
                         
                         {% endif %}
-                        
-                          
-                                
-                               
 
-
-                            <td>{{ appointment.date }}</td>
                             <td>{{ appointment.time_start }}</td>
                             <td>{{ appointment.time_end}}</td>
                       
+
+                            {% if appointment.patient_id != None %}
                             <td>
                                     <form method="POST" action='{{url_for('clerk.unbook_appointment')}}'>
                                             <input class="hidden" value='{{ appointment.id }}' name="appointment_id">
                                             <td><button type="submit" class="btn btn-danger">Cancel Appointment</button></td>
                                         </form>
                             </td>
-                            
+                            {% else %}
+                            <td><td></td></td>
+                            {% endif %}
                         </tr>
-                       
-                    
+                       {% endif %}
+                    {% endfor %}
                     </tbody>
+
                     
+                    
+                    {% endif %}
                     {% endfor %}
                 </table>
                 {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %} {% for message in messages %} {% if "Error"
